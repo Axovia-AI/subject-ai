@@ -6,8 +6,9 @@ import heroDashboard from "@/assets/hero-dashboard.png";
 
 const Hero = () => {
   return (
-    <section className="pt-24 pb-16 px-6 bg-gradient-secondary">
-      <div className="max-w-7xl mx-auto">
+    <section className="pt-24 pb-16 px-6 bg-gradient-secondary relative overflow-hidden">
+      <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+      <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-12">
           <Badge variant="outline" className="mb-6 border-primary text-primary">
             <Sparkles className="w-3 h-3 mr-1" />
@@ -31,9 +32,9 @@ const Hero = () => {
             <div className="flex gap-2 w-full sm:w-auto">
               <Input 
                 placeholder="Enter your email to get started"
-                className="min-w-[300px]"
+                className="min-w-[300px] bg-background/80 backdrop-blur-sm border-border/50 focus:border-primary/50 transition-all duration-200"
               />
-              <Button variant="gradient" className="px-8">
+              <Button variant="gradient" className="px-8 hover:scale-105 hover:shadow-xl transition-all duration-300">
                 Try Free <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
             </div>
@@ -51,12 +52,12 @@ const Hero = () => {
           </div>
         </div>
 
-        <div className="relative max-w-5xl mx-auto">
-          <div className="absolute inset-0 bg-gradient-primary rounded-3xl opacity-20 blur-3xl"></div>
+        <div className="relative max-w-5xl mx-auto group">
+          <div className="absolute inset-0 bg-gradient-primary rounded-3xl opacity-20 blur-3xl group-hover:opacity-30 transition-opacity duration-500"></div>
           <img 
             src={heroDashboard} 
             alt="SubjectAI Dashboard"
-            className="relative w-full rounded-3xl shadow-strong border border-border"
+            className="relative w-full rounded-3xl shadow-strong border border-border/50 group-hover:shadow-2xl transition-all duration-500 hover:scale-[1.02]"
           />
         </div>
       </div>

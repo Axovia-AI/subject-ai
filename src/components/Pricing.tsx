@@ -78,11 +78,15 @@ const Pricing = () => {
           {plans.map((plan, index) => (
             <Card 
               key={index} 
-              className={`relative ${plan.popular ? 'border-primary shadow-strong scale-105' : 'border-border'} hover:shadow-soft transition-all duration-300`}
+              className={`relative group transition-all duration-300 ${
+                plan.popular 
+                  ? 'border-primary shadow-lg scale-105 hover:scale-110 hover:shadow-xl bg-gradient-to-b from-background to-primary/5' 
+                  : 'border-border hover:border-primary/30 hover:scale-105 hover:shadow-lg'
+              }`}
             >
               {plan.popular && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <Badge className="bg-primary px-4 py-1">
+                  <Badge className="bg-gradient-primary px-4 py-1 animate-pulse shadow-md">
                     <Star className="w-3 h-3 mr-1" />
                     Most Popular
                   </Badge>
@@ -103,15 +107,19 @@ const Pricing = () => {
               <CardContent className="pt-0">
                 <Button 
                   variant={plan.popular ? "gradient" : "outline"} 
-                  className="w-full mb-6"
+                  className={`w-full mb-6 transition-all duration-200 ${
+                    plan.popular 
+                      ? 'hover:scale-105 hover:shadow-xl' 
+                      : 'hover:scale-105 hover:shadow-md hover:border-primary'
+                  }`}
                 >
                   {plan.popular ? "Start Free Trial" : "Get Started"}
                 </Button>
                 
                 <ul className="space-y-3">
                   {plan.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-center gap-3">
-                      <Check className="w-5 h-5 text-primary flex-shrink-0" />
+                    <li key={featureIndex} className="flex items-center gap-3 group-hover:translate-x-1 transition-transform duration-200">
+                      <Check className="w-5 h-5 text-primary flex-shrink-0 group-hover:scale-110 transition-transform" />
                       <span className="text-foreground">{feature}</span>
                     </li>
                   ))}

@@ -88,18 +88,18 @@ const Features = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
-            <Card key={index} className="relative group hover:shadow-soft transition-all duration-300 border-border">
+            <Card key={index} className="relative group hover:shadow-lg transition-all duration-300 border-border hover:border-primary/30 hover:scale-105">
               <CardContent className="p-6">
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0">
-                    <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                      <feature.icon className="w-6 h-6 text-primary" />
+                    <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-200">
+                      <feature.icon className="w-6 h-6 text-primary group-hover:text-primary/90" />
                     </div>
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <h3 className="font-semibold text-foreground">{feature.title}</h3>
-                      <Badge variant="secondary" className="text-xs">
+                      <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">{feature.title}</h3>
+                      <Badge variant="secondary" className="text-xs group-hover:bg-primary/10 transition-colors">
                         {feature.badge}
                       </Badge>
                     </div>
