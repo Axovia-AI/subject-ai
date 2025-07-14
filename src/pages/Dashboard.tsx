@@ -10,6 +10,7 @@ import { User } from '@supabase/supabase-js';
 import { BarChart3, Mail, TrendingUp, Settings, LogOut, User as UserIcon, Activity } from 'lucide-react';
 import aiBrainLogo from "@/assets/ai-brain-logo.png";
 import { AnalyticsOverview } from '@/components/analytics/AnalyticsOverview';
+import { SettingsPage } from '@/components/settings/SettingsPage';
 
 interface UserProfile {
   id: string;
@@ -288,31 +289,7 @@ const Dashboard = () => {
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Account Settings</CardTitle>
-                <CardDescription>
-                  Manage your account preferences and settings
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div>
-                    <h4 className="font-medium mb-2">Profile Information</h4>
-                    <div className="text-sm text-muted-foreground space-y-1">
-                      <p>Email: {user?.email}</p>
-                      <p>Name: {userProfile?.full_name || 'Not set'}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="pt-4 border-t border-border">
-                    <Button variant="outline" disabled>
-                      Edit Profile (Coming Soon)
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <SettingsPage />
           </TabsContent>
         </Tabs>
       </main>
