@@ -13,6 +13,14 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
+// Handle messages from content scripts
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === 'openPopup') {
+    // Open extension popup when requested
+    chrome.action.openPopup();
+  }
+});
+
 // Reset daily stats at midnight
 chrome.alarms.create('resetDailyStats', {
   when: getNextMidnight(),
@@ -31,15 +39,5 @@ function getNextMidnight(): number {
   midnight.setHours(24, 0, 0, 0);
   return midnight.getTime();
 }
-
-// Handle messages from content scripts
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.type === 'updateStats') {
-    chrome.storage.local.get(['optimizedToday'], (result) => {
-      const newCount = (result.optimizedToday || 0) + 1;
-      chrome.storage.local.set({ optimizedToday: newCount });
-    });
-  }
-});
 
 export {};

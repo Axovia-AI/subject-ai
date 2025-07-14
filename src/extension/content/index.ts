@@ -2,7 +2,7 @@ import { GmailContentScript } from './gmail';
 
 let currentScript: GmailContentScript | null = null;
 
-function initExtension() {
+async function initExtension(): Promise<void> {
   // Cleanup existing script
   if (currentScript) {
     currentScript.destroy();
@@ -13,12 +13,12 @@ function initExtension() {
   
   if (hostname.includes('gmail.com') || hostname.includes('mail.google.com')) {
     currentScript = new GmailContentScript();
-    currentScript.init();
+    await currentScript.init();
   }
   // Add Outlook support later
   // else if (hostname.includes('outlook')) {
   //   currentScript = new OutlookContentScript();
-  //   currentScript.init();
+  //   await currentScript.init();
   // }
 }
 
