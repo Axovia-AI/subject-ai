@@ -19,4 +19,27 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      input: {
+        main: 'index.html',
+        popup: 'extension/popup.html',
+        content: 'src/extension/content/index.ts',
+        background: 'src/extension/background/index.ts'
+      },
+      output: {
+        entryFileNames: (chunkInfo) => {
+          if (chunkInfo.name === 'popup') return 'popup.js';
+          if (chunkInfo.name === 'content') return 'content.js';
+          if (chunkInfo.name === 'background') return 'background.js';
+          return '[name].[hash].js';
+        },
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name === 'popup.css') return 'popup.css';
+          if (assetInfo.name === 'content.css') return 'content.css';
+          return '[name].[hash].[ext]';
+        }
+      }
+    }
+  }
 }));
