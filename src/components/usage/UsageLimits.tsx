@@ -21,6 +21,12 @@ interface UsageLimitsProps {
   userId: string;
 }
 
+// Map subscription status to plan type for usage calculations
+const getEffectivePlan = (subscriptionData: any) => {
+  if (!subscriptionData?.subscribed) return 'free';
+  return subscriptionData.subscription_tier?.toLowerCase() || 'premium';
+};
+
 interface PlanLimits {
   name: string;
   optimizations: number;

@@ -12,6 +12,7 @@ import aiBrainLogo from "@/assets/ai-brain-logo.png";
 import { AnalyticsOverview } from '@/components/analytics/AnalyticsOverview';
 import { SettingsPage } from '@/components/settings/SettingsPage';
 import { UsageOverview } from '@/components/usage/UsageOverview';
+import { SubscriptionManager } from '@/components/subscription/SubscriptionManager';
 
 interface UserProfile {
   id: string;
@@ -222,6 +223,7 @@ const Dashboard = () => {
               <Target className="w-4 h-4" />
               Usage
             </TabsTrigger>
+            <TabsTrigger value="subscription">Subscription</TabsTrigger>
             <TabsTrigger value="extension">Browser Extension</TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
@@ -272,6 +274,10 @@ const Dashboard = () => {
 
           <TabsContent value="usage" className="space-y-6">
             <UsageOverview userId={user?.id || ''} />
+          </TabsContent>
+
+          <TabsContent value="subscription" className="space-y-6">
+            <SubscriptionManager userId={user?.id || ''} />
           </TabsContent>
 
           <TabsContent value="extension" className="space-y-6">
