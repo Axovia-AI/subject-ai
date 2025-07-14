@@ -7,8 +7,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { User } from '@supabase/supabase-js';
-import { BarChart3, Mail, TrendingUp, Settings, LogOut, User as UserIcon } from 'lucide-react';
+import { BarChart3, Mail, TrendingUp, Settings, LogOut, User as UserIcon, Activity } from 'lucide-react';
 import aiBrainLogo from "@/assets/ai-brain-logo.png";
+import { AnalyticsOverview } from '@/components/analytics/AnalyticsOverview';
 
 interface UserProfile {
   id: string;
@@ -211,6 +212,10 @@ const Dashboard = () => {
         <Tabs defaultValue="overview" className="space-y-6">
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="analytics" className="flex items-center gap-2">
+              <Activity className="w-4 h-4" />
+              Analytics
+            </TabsTrigger>
             <TabsTrigger value="extension">Browser Extension</TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
@@ -253,6 +258,10 @@ const Dashboard = () => {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="analytics" className="space-y-6">
+            <AnalyticsOverview userId={user?.id || ''} />
           </TabsContent>
 
           <TabsContent value="extension" className="space-y-6">
