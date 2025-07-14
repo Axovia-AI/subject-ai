@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Settings, Zap, Bell, Palette, Brain } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import { useTheme } from "next-themes";
 
 interface GeneralSettingsProps {
   preferences: {
@@ -25,6 +26,7 @@ export const GeneralSettings: React.FC<GeneralSettingsProps> = ({
   isLoading 
 }) => {
   const { toast } = useToast();
+  const { theme, setTheme } = useTheme();
 
   // Handle preference updates with optimistic UI
   const handlePreferenceChange = async (key: string, value: any) => {
@@ -43,6 +45,15 @@ export const GeneralSettings: React.FC<GeneralSettingsProps> = ({
         variant: "destructive",
       });
     }
+  };
+
+  // Handle theme change - update both theme and preferences
+  const handleThemeChange = async (newTheme: string) => {
+    // Immediately apply the theme
+    setTheme(newTheme);
+    
+    // Also save to preferences
+    await handlePreferenceChange('theme_preference', newTheme);
   };
 
   // AI Model options with descriptions
@@ -87,8 +98,8 @@ export const GeneralSettings: React.FC<GeneralSettingsProps> = ({
               </p>
             </div>
             <Select
-              value={preferences?.theme_preference || 'system'}
-              onValueChange={(value) => handlePreferenceChange('theme_preference', value)}
+              value={theme || 'system'}
+              onValueChange={handleThemeChange}
               disabled={isLoading}
             >
               <SelectTrigger className="w-32">
