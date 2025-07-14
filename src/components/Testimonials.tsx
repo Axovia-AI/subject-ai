@@ -72,28 +72,28 @@ const Testimonials = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
-            <Card key={index} className="border-border hover:shadow-soft transition-all duration-300">
+            <Card key={index} className="border-border hover:shadow-xl transition-all duration-500 hover:-translate-y-2 group animate-fade-in hover:bg-gradient-to-br hover:from-background hover:to-primary/5" style={{animationDelay: `${index * 100}ms`}}>
               <CardContent className="p-6">
                 <div className="flex items-center gap-1 mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-primary text-primary" />
+                    <Star key={i} className="w-4 h-4 fill-primary text-primary group-hover:scale-125 transition-transform duration-300" style={{transitionDelay: `${i * 50}ms`}} />
                   ))}
                 </div>
                 
                 <div className="relative mb-6">
-                  <Quote className="absolute -top-2 -left-2 w-6 h-6 text-primary/20" />
-                  <p className="text-foreground leading-relaxed pl-4">
+                  <Quote className="absolute -top-2 -left-2 w-6 h-6 text-primary/20 group-hover:text-primary/40 transition-all duration-300 group-hover:scale-110" />
+                  <p className="text-foreground leading-relaxed pl-4 group-hover:text-foreground/90 transition-colors duration-300">
                     {testimonial.content}
                   </p>
                 </div>
                 
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center text-primary-foreground font-semibold">
+                  <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center text-primary-foreground font-semibold group-hover:scale-110 transition-transform duration-300 animate-glow">
                     {testimonial.avatar}
                   </div>
-                  <div>
+                  <div className="group-hover:translate-x-1 transition-transform duration-300">
                     <div className="font-semibold text-foreground">{testimonial.name}</div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-sm text-muted-foreground group-hover:text-primary transition-colors duration-300">
                       {testimonial.role} at {testimonial.company}
                     </div>
                   </div>
