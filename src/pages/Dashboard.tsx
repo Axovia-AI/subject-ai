@@ -6,8 +6,9 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { User } from '@supabase/supabase-js';
-import { BarChart3, Mail, TrendingUp, Settings, LogOut, User as UserIcon, Activity, Target } from 'lucide-react';
+import { useAuth } from "@/contexts/AuthContext";
+import { useSubscription } from "@/contexts/SubscriptionContext";
+import { BarChart3, Mail, TrendingUp, Settings, LogOut, User as UserIcon, Activity, Target, Crown } from 'lucide-react';
 import aiBrainLogo from "@/assets/ai-brain-logo.png";
 import { AnalyticsOverview } from '@/components/analytics/AnalyticsOverview';
 import { SettingsPage } from '@/components/settings/SettingsPage';
@@ -27,42 +28,26 @@ interface UsageStats {
 }
 
 const Dashboard = () => {
-  const [user, setUser] = useState<User | null>(null);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [usageStats, setUsageStats] = useState<UsageStats | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user, loading, signOut } = useAuth();
+  const { subscriptionData } = useSubscription();
 
+  // Redirect to auth if not authenticated
   useEffect(() => {
-    // Check authentication and load user data
-    const initializeUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (!session) {
-        navigate('/auth');
-        return;
-      }
+    if (!loading && !user) {
+      navigate('/auth');
+    }
+  }, [user, loading, navigate]);
 
-      setUser(session.user);
-      await loadUserData(session.user.id);
-      setIsLoading(false);
-    };
-
-    initializeUser();
-
-    // Listen for auth state changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (!session) {
-        navigate('/auth');
-      } else {
-        setUser(session.user);
-        loadUserData(session.user.id);
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [navigate]);
+  // Load user data when user changes
+  useEffect(() => {
+    if (user?.id) {
+      loadUserData(user.id);
+    }
+  }, [user?.id]);
 
   // Load user profile and stats
   const loadUserData = async (userId: string) => {
@@ -101,23 +86,23 @@ const Dashboard = () => {
 
   // Handle logout
   const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      toast({
-        title: "Error signing out",
-        description: error.message,
-        variant: "destructive",
-      });
-    } else {
+    try {
+      await signOut();
       toast({
         title: "Signed out successfully",
         description: "You've been logged out of your account.",
       });
       navigate('/');
+    } catch (error) {
+      toast({
+        title: "Error signing out",
+        description: "Please try again",
+        variant: "destructive",
+      });
     }
   };
 
-  if (isLoading) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
@@ -140,6 +125,12 @@ const Dashboard = () => {
             </div>
             
             <div className="flex items-center gap-4">
+              {subscriptionData?.subscribed && (
+                <Badge className="bg-primary/10 text-primary border-primary/20 flex items-center gap-1">
+                  <Crown className="w-3 h-3" />
+                  Premium
+                </Badge>
+              )}
               <div className="flex items-center gap-2 text-sm">
                 <UserIcon className="w-4 h-4" />
                 <span className="text-muted-foreground">
@@ -277,6 +268,18 @@ const Dashboard = () => {
           </TabsContent>
 
           <TabsContent value="subscription" className="space-y-6">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-2xl font-bold">Subscription</h2>
+                <p className="text-muted-foreground">Manage your plan and billing</p>
+              </div>
+              {subscriptionData?.subscribed && (
+                <Badge className="bg-primary/10 text-primary border-primary/20 flex items-center gap-1">
+                  <Crown className="w-3 h-3" />
+                  Premium Active
+                </Badge>
+              )}
+            </div>
             <SubscriptionManager userId={user?.id || ''} />
           </TabsContent>
 

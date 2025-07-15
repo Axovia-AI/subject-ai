@@ -4,21 +4,22 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
+import { AuthProvider } from "./contexts/AuthContext";
+import { SubscriptionProvider } from "./contexts/SubscriptionContext";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
+import { useAuth } from "./contexts/AuthContext";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
+// Component to wrap subscription provider with auth context
+const AppWithAuth = () => {
+  const { user } = useAuth();
+  
+  return (
+    <SubscriptionProvider user={user}>
       <TooltipProvider>
         <Toaster />
         <Sonner />
@@ -32,6 +33,21 @@ const App = () => (
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
+    </SubscriptionProvider>
+  );
+};
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange
+    >
+      <AuthProvider>
+        <AppWithAuth />
+      </AuthProvider>
     </ThemeProvider>
   </QueryClientProvider>
 );
