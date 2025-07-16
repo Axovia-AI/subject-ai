@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 import aiBrainLogo from "@/assets/ai-brain-logo.png";
 
 const Auth = () => {
@@ -15,6 +16,7 @@ const Auth = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user, loading } = useAuth();
 
   // Auth form state for login
   const [loginForm, setLoginForm] = useState({
@@ -31,24 +33,10 @@ const Auth = () => {
 
   // Check if user is already authenticated
   useEffect(() => {
-    const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        navigate('/dashboard');
-      }
-    };
-
-    checkAuth();
-
-    // Listen for auth state changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session) {
-        navigate('/dashboard');
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [navigate]);
+    if (!loading && user) {
+      navigate('/dashboard');
+    }
+  }, [user, loading, navigate]);
 
   // Handle login
   const handleLogin = async (e: React.FormEvent) => {
