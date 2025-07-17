@@ -14,6 +14,7 @@ import { AnalyticsOverview } from '@/components/analytics/AnalyticsOverview';
 import { SettingsPage } from '@/components/settings/SettingsPage';
 import { UsageOverview } from '@/components/usage/UsageOverview';
 import { SubscriptionManager } from '@/components/subscription/SubscriptionManager';
+import { EmailOptimizer } from '@/components/optimization/EmailOptimizer';
 
 interface UserProfile {
   id: string;
@@ -206,6 +207,10 @@ const Dashboard = () => {
         <Tabs defaultValue="overview" className="space-y-6">
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="optimizer" className="flex items-center gap-2">
+              <Mail className="w-4 h-4" />
+              Optimizer
+            </TabsTrigger>
             <TabsTrigger value="analytics" className="flex items-center gap-2">
               <Activity className="w-4 h-4" />
               Analytics
@@ -231,32 +236,36 @@ const Dashboard = () => {
                 <div className="flex items-start gap-4">
                   <Badge variant="secondary" className="mt-1">1</Badge>
                   <div>
-                    <h4 className="font-medium">Install Browser Extension</h4>
+                    <h4 className="font-medium">Try the Subject Line Optimizer</h4>
                     <p className="text-sm text-muted-foreground">
-                      Add our Chrome extension to optimize Gmail subject lines in real-time
+                      Test our AI optimizer manually or install the browser extension for real-time optimization
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
                   <Badge variant="secondary" className="mt-1">2</Badge>
                   <div>
-                    <h4 className="font-medium">Connect Your Email</h4>
+                    <h4 className="font-medium">Install Browser Extension</h4>
                     <p className="text-sm text-muted-foreground">
-                      The extension will automatically detect when you're composing emails
+                      Add our Chrome extension to optimize Gmail subject lines automatically while composing
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
                   <Badge variant="secondary" className="mt-1">3</Badge>
                   <div>
-                    <h4 className="font-medium">Get AI Suggestions</h4>
+                    <h4 className="font-medium">Monitor Performance</h4>
                     <p className="text-sm text-muted-foreground">
-                      Our AI will suggest optimized subject lines based on your email content
+                      Track your email open rates and optimization statistics in the analytics tab
                     </p>
                   </div>
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="optimizer" className="space-y-6">
+            <EmailOptimizer />
           </TabsContent>
 
           <TabsContent value="analytics" className="space-y-6">
