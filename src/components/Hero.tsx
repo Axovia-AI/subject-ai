@@ -60,32 +60,34 @@ const Hero = () => {
               </p>
 
               {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 mb-8 animate-fade-in">
-                <Button 
-                  size="lg" 
+              <div className="flex flex-col sm:flex-row gap-4 mb-8 animate-fade-in" role="group" aria-label="Hero actions">
+                <Button
+                  size="lg"
                   onClick={handleGetStarted}
+                  aria-label={user ? 'Go to Dashboard' : 'Get Started Free'}
                   className="bg-gradient-primary hover:shadow-xl hover:scale-105 transition-all duration-300 text-white font-semibold px-8"
                 >
                   {user ? (
                     <>
-                      <Zap className="w-5 h-5 mr-2" />
+                      <Zap className="w-5 h-5 mr-2" aria-hidden="true" />
                       Go to Dashboard
                     </>
                   ) : (
                     <>
                       Get Started Free
-                      <ArrowRight className="w-5 h-5 ml-2" />
+                      <ArrowRight className="w-5 h-5 ml-2" aria-hidden="true" />
                     </>
                   )}
                 </Button>
-                
-                <Button 
-                  variant="outline" 
+
+                <Button
+                  variant="outline"
                   size="lg"
                   onClick={handleTryOptimizer}
+                  aria-label="Try Optimizer"
                   className="hover:bg-primary/5 hover:border-primary/50 hover:scale-105 transition-all duration-300 font-semibold px-8"
                 >
-                  <Sparkles className="w-5 h-5 mr-2" />
+                  <Sparkles className="w-5 h-5 mr-2" aria-hidden="true" />
                   Try Optimizer
                 </Button>
               </div>

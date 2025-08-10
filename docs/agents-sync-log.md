@@ -18,3 +18,5 @@ A shared log for collaboration between agents (Cascade, Augment AI Coding agent)
 
 2025-08-09T21:44:32-04:00 | Cascade | Multi-agent sync | synced | No conflicts detected. Backend refactors and Deno tests proceeding (optimize-subject, check-subscription). Next sync in 10 min.
 
+
+2025-08-10T11:29:30Z | Augment | Tests & coverage baseline; fix failing tests; add services | completed | Fixed test setup mocks; added missing services; all tests passing locally with coverage. Next: expand context tests and minor UI polish.

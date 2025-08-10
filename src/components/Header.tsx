@@ -56,7 +56,7 @@ const Header = () => {
           </span>
         </Link>
         
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-8" aria-label="Primary">
           <a href="#features" className="text-muted-foreground hover:text-primary transition-all duration-200 hover:scale-105 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all after:duration-200 hover:after:w-full">
             Features
           </a>

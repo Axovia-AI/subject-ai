@@ -65,7 +65,10 @@ service_role key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZ
 - [x] Implement initial tests (utils + Index smoke)
 - [x] Add CI workflow with coverage + JUnit artifacts
 - [x] Validate local test run and artifact creation
-- [ ] Expand frontend test coverage (Header, Auth)
+- [x] Expand frontend test coverage (Header, Auth, App)
+- [x] Add service layer tests (ComponentService, InventoryService, PurchaseOrderService, DigikeyService)
+- [ ] Add targeted tests for contexts (AuthContext, SubscriptionContext)
+- [ ] Add Deno unit tests for extracted logic in supabase/functions/*/logic.ts
 
 ## Monetization (Stripe) Plan
 - Single Source of Truth for pricing: configure Stripe Price IDs and map tiers in one config consumed by Edge Functions and UI.
@@ -102,6 +105,15 @@ service_role key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZ
   - `src/lib/utils.test.ts`
   - `src/pages/Index.test.tsx`
   - `.github/workflows/ci.yml`
+- Added recently:
+  - `src/services/ComponentService.ts`
+  - `src/services/InventoryService.ts`
+  - `src/services/PurchaseOrderService.ts`
+  - `src/services/DigikeyService.ts`
+- Updated recently:
+  - `src/test-setup.ts` (stable partial mocks for next-themes and react-router-dom)
+  - `src/__tests__/App.test.tsx` (assertions adapted to real DOM)
+
   - `docs/implementation-plan.md` (this document)
 - Updated:
   - `package.json` (test scripts)
