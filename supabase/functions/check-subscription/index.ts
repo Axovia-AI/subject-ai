@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@14.21.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import { toIsoFromUnixSeconds, mapPriceIdToTierFromEnv } from "./logic.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -11,7 +12,7 @@ const corsHeaders = {
 const logStep = (step: string, details?: any) => {
   const detailsStr = details ? ` - ${JSON.stringify(details)}` : '';
   console.log(`[CHECK-SUBSCRIPTION] ${step}${detailsStr}`);
-};
+
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -38,7 +39,7 @@ serve(async (req) => {
 
     const token = authHeader.replace("Bearer ", "");
     logStep("Authenticating user with token");
-    
+
     const { data: userData, error: userError } = await supabaseClient.auth.getUser(token);
     if (userError) throw new Error(`Authentication error: ${userError.message}`);
     const user = userData.user;
@@ -47,7 +48,7 @@ serve(async (req) => {
 
     const stripe = new Stripe(stripeKey, { apiVersion: "2023-10-16" });
     const customers = await stripe.customers.list({ email: user.email, limit: 1 });
-    
+
     if (customers.data.length === 0) {
       logStep("No customer found, updating unsubscribed state");
       await supabaseClient.from("subscribers").upsert({
@@ -74,25 +75,17 @@ serve(async (req) => {
       limit: 1,
     });
     const hasActiveSub = subscriptions.data.length > 0;
-    let subscriptionTier = null;
-    let subscriptionEnd = null;
+    let subscriptionTier: string | null = null;
+    let subscriptionEnd: string | null = null;
 
     if (hasActiveSub) {
       const subscription = subscriptions.data[0];
-      subscriptionEnd = new Date(subscription.current_period_end * 1000).toISOString();
+      subscriptionEnd = toIsoFromUnixSeconds(subscription.current_period_end);
       logStep("Active subscription found", { subscriptionId: subscription.id, endDate: subscriptionEnd });
-      // Determine subscription tier from price
+      // Determine subscription tier from price ID using STRIPE_PRICE_MAP
       const priceId = subscription.items.data[0].price.id;
-      const price = await stripe.prices.retrieve(priceId);
-      const amount = price.unit_amount || 0;
-      if (amount <= 999) {
-        subscriptionTier = "Basic";
-      } else if (amount <= 1999) {
-        subscriptionTier = "Premium";
-      } else {
-        subscriptionTier = "Enterprise";
-      }
-      logStep("Determined subscription tier", { priceId, amount, subscriptionTier });
+      subscriptionTier = mapPriceIdToTierFromEnv(priceId);
+      logStep("Determined subscription tier", { priceId, subscriptionTier });
     } else {
       logStep("No active subscription found");
     }

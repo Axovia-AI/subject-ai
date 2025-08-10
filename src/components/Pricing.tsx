@@ -2,6 +2,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Check, Star } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
 
 const Pricing = () => {
   const plans = [
@@ -49,6 +53,27 @@ const Pricing = () => {
       popular: false
     }
   ];
+
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  const startCheckout = async (planName: string) => {
+    try {
+      if (!user) {
+        navigate('/auth');
+        return;
+      }
+      const { data, error } = await supabase.functions.invoke('create-checkout', {
+        body: { planName }
+      });
+      if (error) throw error;
+      window.open(data.url, '_blank');
+    } catch (err) {
+      console.error('Checkout error', err);
+      toast({ title: 'Error', description: 'Failed to start checkout', variant: 'destructive' });
+    }
+  };
 
   return (
     <section id="pricing" className="py-20 px-6 bg-gradient-secondary">
@@ -105,15 +130,16 @@ const Pricing = () => {
               </CardHeader>
               
               <CardContent className="pt-0">
-                <Button 
-                  variant={plan.popular ? "gradient" : "outline"} 
+                <Button
+                  onClick={() => startCheckout(plan.name)}
+                  variant={plan.popular ? "gradient" : "outline"}
                   className={`w-full mb-6 transition-all duration-200 ${
-                    plan.popular 
-                      ? 'hover:scale-105 hover:shadow-xl' 
+                    plan.popular
+                      ? 'hover:scale-105 hover:shadow-xl'
                       : 'hover:scale-105 hover:shadow-md hover:border-primary'
                   }`}
                 >
-                  {plan.popular ? "Start Free Trial" : "Get Started"}
+                  {plan.popular ? "Start Free Trial" : `Get Started with ${plan.name}`}
                 </Button>
                 
                 <ul className="space-y-3">

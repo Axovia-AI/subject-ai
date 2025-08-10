@@ -13,6 +13,9 @@ const logStep = (step: string, details?: any) => {
   console.log(`[CREATE-CHECKOUT] ${step}${detailsStr}`);
 };
 
+import { resolvePriceIdFromEnv } from "./logic.ts";
+
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -44,7 +47,7 @@ serve(async (req) => {
 
     // Parse request body to get plan details
     const { priceId, planName = "SubjectAI Premium" } = await req.json().catch(() => ({ priceId: null }));
-    
+
     const stripe = new Stripe(stripeKey, { apiVersion: "2023-10-16" });
     const customers = await stripe.customers.list({ email: user.email, limit: 1 });
     let customerId;
@@ -55,13 +58,16 @@ serve(async (req) => {
       logStep("Creating new customer");
     }
 
-    // Default pricing if no priceId provided
-    const lineItems = priceId ? [{ price: priceId, quantity: 1 }] : [
+    // Use explicit price if provided, otherwise attempt to resolve from plan name.
+    const resolvedPriceId = priceId || resolvePriceIdFromEnv(planName);
+
+    // Default pricing if no priceId provided or found in mapping
+    const lineItems = resolvedPriceId ? [{ price: resolvedPriceId, quantity: 1 }] : [
       {
         price_data: {
           currency: "usd",
           product_data: { name: planName },
-          unit_amount: 1999, // $19.99 per month
+          unit_amount: 1999, // $19.99 per month (fallback)
           recurring: { interval: "month" },
         },
         quantity: 1,

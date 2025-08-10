@@ -1,6 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.50.5';
+import { buildPrompt, parseOptimizedSubjects } from './logic.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -34,29 +35,8 @@ serve(async (req) => {
 
     console.log('Generating optimized subject lines for:', originalSubject);
 
-    // Create AI prompt for subject line optimization
-    const prompt = `You are an expert email subject line optimizer. Your goal is to create compelling, engaging subject lines that increase open rates.
-
-Original subject: "${originalSubject}"
-Email context: ${emailContext || 'No additional context provided'}
-Desired tone: ${tone}
-
-Generate 3 alternative subject lines that are:
-1. Clear and specific
-2. Action-oriented when appropriate
-3. Concise (under 50 characters when possible)
-4. Engaging and likely to increase open rates
-5. Matching the ${tone} tone
-
-Consider these best practices:
-- Use numbers when relevant
-- Create urgency when appropriate
-- Ask questions to spark curiosity
-- Personalize when possible
-- Avoid spam trigger words
-
-Return ONLY a JSON array of 3 strings, no additional text or formatting.
-Example: ["Subject 1", "Subject 2", "Subject 3"]`;
+    // Build LLM prompt via pure logic util
+    const prompt = buildPrompt(originalSubject, emailContext, tone);
 
     // Call OpenAI API
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -86,7 +66,7 @@ Example: ["Subject 1", "Subject 2", "Subject 3"]`;
     }
 
     const data = await response.json();
-    const optimizedSubjects = JSON.parse(data.choices[0].message.content);
+    const optimizedSubjects = parseOptimizedSubjects(data.choices[0].message.content);
 
     console.log('Generated optimized subjects:', optimizedSubjects);
 

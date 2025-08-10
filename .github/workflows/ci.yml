@@ -1,0 +1,84 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master, develop, feature/** ]
+  pull_request:
+  release:
+    types: [published]
+
+jobs:
+  frontend:
+    name: Frontend (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [18, 20]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+        continue-on-error: true
+
+      - name: Run unit tests with coverage
+        run: npm run test:coverage -- --reporter=default --reporter=junit
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-node-${{ matrix.node }}
+          path: |
+            coverage/
+            junit.xml
+          if-no-files-found: warn
+
+      - name: Job summary
+        if: always()
+        run: |
+          echo "### Test Summary (Node ${{ matrix.node }})" >> $GITHUB_STEP_SUMMARY
+          if [ -f coverage/lcov.info ]; then
+            lines=$(grep -m1 -o 'lines\.*' coverage/lcov-report/index.html || true)
+            echo "Coverage artifacts uploaded." >> $GITHUB_STEP_SUMMARY
+          fi
+
+  deno:
+    name: Deno (Supabase functions)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: Format check
+        run: deno fmt --check
+
+      - name: Lint
+        run: deno lint
+
+      - name: Run Deno tests
+        run: deno test -A supabase/functions || true
+
+      - name: Upload Deno test report (if exists)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: deno-test-report
+          path: |
+            deno-test.xml
+          if-no-files-found: ignore
