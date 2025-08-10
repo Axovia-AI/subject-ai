@@ -44,6 +44,33 @@ jobs:
             junit.xml
           if-no-files-found: warn
 
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Build app for e2e
+        run: npm run build
+
+      - name: Start preview server
+        run: |
+          npm run e2e:serve &
+          echo $! > preview_pid
+
+      - name: Wait for preview to be ready
+        run: |
+          for i in {1..30}; do
+            if curl -sSf http://localhost:4173 > /dev/null; then
+              echo "Server is up"; exit 0; fi; sleep 2; done; exit 1
+
+      - name: Run e2e (Cucumber)
+        env:
+          E2E_BASE_URL: http://localhost:4173
+        run: npm run e2e
+
+      - name: Stop preview server
+        if: always()
+        run: |
+          if [ -f preview_pid ]; then kill $(cat preview_pid) || true; fi
+
       - name: Job summary
         if: always()
         run: |
