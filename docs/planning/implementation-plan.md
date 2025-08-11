@@ -3,7 +3,7 @@
 Generated from PRD at `docs/prd.md` and current repository state.
 
 ## 1) Confirmed Technology Stacks
-- Frontend: Next.js (TypeScript)
+- Frontend: Vite + React (TypeScript)
 - Backend: Supabase Edge Functions (Deno) in `supabase/functions/`
 - Auth: Supabase Auth
 - Payments: Stripe (Checkout, Billing Portal, Webhooks)
@@ -11,7 +11,7 @@ Generated from PRD at `docs/prd.md` and current repository state.
 - AI Provider: OpenAI (LLM for subject optimization)
 - CI/CD: GitHub Actions (tests on PRs; deploy on main)
 - Hosting: Vercel (frontend), Supabase (backend)
-- Testing: Jest/Playwright on frontend; Deno/TypeScript tests for functions; API/e2e via Playwright + Supabase session
+- Testing: Vitest/Playwright on frontend; Deno/TypeScript tests for functions; API/e2e via Playwright + Supabase session
 
 ## 2) Project Structure
 ```
