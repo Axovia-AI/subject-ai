@@ -13,7 +13,7 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "e2e:serve": "vite preview --port 5174",
-    "e2e": "npm exec cucumber-js -- --require features/steps/**/*.js --publish-quiet",
+    "e2e": "npx @cucumber/cucumber --require features/steps/**/*.js --publish-quiet",
     "docs:frontend": "typedoc"
   },
   "dependencies": {

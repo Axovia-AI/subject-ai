@@ -22,8 +22,7 @@ vi.mock('@/integrations/supabase/client', () => {
 // Some environments define the property but not as a function, so check type
 // lint-fix: none
 if (typeof window.matchMedia !== 'function') {
-  // @ts-expect-error augment jsdom window
-  window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+  (window as any).matchMedia = vi.fn().mockImplementation((query: string) => ({
     matches: false,
     media: query,
     onchange: null,
@@ -36,8 +35,6 @@ if (typeof window.matchMedia !== 'function') {
 }
 
 // Ensure globalThis also has matchMedia (some libs reference it via global scope)
-// @ts-expect-error augment jsdom global
-if (typeof globalThis.matchMedia !== 'function') {
-  // @ts-expect-error augment jsdom global
-  globalThis.matchMedia = window.matchMedia
+if (typeof (globalThis as any).matchMedia !== 'function') {
+  (globalThis as any).matchMedia = (window as any).matchMedia
 }
