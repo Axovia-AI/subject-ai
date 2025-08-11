@@ -73,14 +73,31 @@ const Pricing = () => {
 
   const startCheckout = async (planName: string) => {
     try {
+      const planKey = `${planName}:${billingPeriod}`
+      const isE2E = import.meta.env.VITE_E2E === 'true'
+
+      // In E2E mode, bypass auth and call the function endpoint directly so the test route mock can intercept.
+      if (isE2E) {
+        const resp = await fetch('/functions/v1/create-checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ planName: planKey })
+        })
+        if (!resp.ok) throw new Error(`E2E checkout failed: ${resp.status}`)
+        const data = await resp.json()
+        if (data?.url) window.open(data.url, '_blank')
+        return
+      }
+
       if (!user) {
         navigate('/auth');
         return;
       }
+
       const { data, error } = await supabase.functions.invoke('create-checkout', {
         // Include period in planName so STRIPE_PRICE_MAP can distinguish, e.g.
         // { "Professional:monthly": "price_123", "Professional:annual": "price_abc" }
-        body: { planName: `${planName}:${billingPeriod}` }
+        body: { planName: planKey }
       });
       if (error) throw error;
       window.open(data.url, '_blank');

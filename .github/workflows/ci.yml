@@ -47,8 +47,8 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      - name: Build app for e2e
-        run: npm run build
+      - name: Build app for e2e (E2E mode)
+        run: VITE_E2E=true npm run build
 
       - name: Start preview server
         run: |
