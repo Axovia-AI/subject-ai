@@ -61,9 +61,12 @@ Note: Estimates default to 3 days if unspecified.
   #1.4: Validate existing DB tables and migrations alignment [ ] (est: 1 day)
 
 #2: Testing and CI/CD pipeline [ ] (est: 3 days)
-  #2.1: Set up unit/integration tests for `supabase/functions/*` (deno/ts) [ ] (est: 1 day) — scaffolded: frontend tests + CI done; Deno tests pending
-  #2.2: Set up Playwright e2e for auth + paid flows (stub Stripe in test) [ ] (est: 1 day) [CURRENT-TASK]
+  #2.1: Set up unit/integration tests for `supabase/functions/*` (deno/ts) [ ] (est: 1 day)
+       - Status: Frontend unit tests + CI are in place; Deno function tests exist for some functions; expansion pending.
+  #2.2: Set up Playwright e2e for auth + paid flows (stub Stripe in test) [in-progress] (est: 1 day) [CURRENT-TASK]
+       - Status: Playwright configured; smoke + pricing toggle tests added; Cucumber pricing feature aligned with UI; E2E bypass path added for checkout; next: auth + paid flow.
   #2.3: GitHub Actions: run tests on PRs; deploy on main [ ] (est: 1 day)
+       - Status: CI green after updating e2e build with VITE_E2E and artifact action versions; deploy step pending.
 
 #3: Feature – AI-generated subject suggestions (Implemented) [ ] (est: 2 days)
   #3.1: Add unit tests for `optimize-subject` logic and error paths [ ] (est: 1 day)
@@ -117,6 +120,8 @@ Note: Estimates default to 3 days if unspecified.
 - JUnit test report generated for CI consumption.
 - Path alias `@` retained (Vite + Vitest config alignment).
 - Supabase Edge Functions: extract pure logic into `logic.ts` per function for unit tests; keep `index.ts` as thin I/O wrapper.
+ - Playwright e2e lives in `tests/e2e/` and runs via `playwright test` (not Vitest). Vitest excludes `tests/e2e/**`.
+ - E2E mode: build with `VITE_E2E=true` in CI to enable auth-bypass path for mocked checkout calls.
 
 ### CI Plan (GitHub Actions)
 - Workflow: `.github/workflows/ci.yml`
@@ -156,6 +161,7 @@ Note: Estimates default to 3 days if unspecified.
 - [x] Wire Pricing CTAs to `create-checkout`
 - [x] Add mapping helpers for STRIPE_PRICE_MAP in edge functions
 - [x] Implement `stripe-webhook` (scaffolded)
+- [x] Implement yearly pricing toggle in `Pricing.tsx` and pass period to checkout (`<plan>:<monthly|annual>`)
 
 ### Requests to Human
 - Provide Stripe Price IDs per tier (or confirm single Premium price to start)
@@ -184,10 +190,16 @@ Note: Estimates default to 3 days if unspecified.
   - `src/pages/Index.test.tsx`
   - `.github/workflows/ci.yml`
   - `docs/implementation-plan.md` (merged; see note in that file)
+  - `playwright.config.ts`
+  - `tests/e2e/smoke.spec.ts`
+  - `tests/e2e/pricing.spec.ts`
 - Updated:
   - `package.json` (test scripts)
+  - `src/components/Pricing.tsx` (billingPeriod toggle + E2E bypass)
+  - `.github/workflows/ci.yml` (VITE_E2E build for e2e)
 
 ## 10) Changelog
+- 2025-08-11: Implemented yearly pricing toggle and passed period to checkout; added Playwright e2e tests (smoke, pricing); aligned Cucumber feature; enabled VITE_E2E in CI; excluded Playwright from Vitest.
 - 2025-08-09: Initial test/CI setup, plan created, tests passing locally, CI configured.
 
 Note: Remember to update this plan after each completed task or subtask by:
