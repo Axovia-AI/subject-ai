@@ -60,6 +60,64 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
+## Quickstart (Local)
+
+1. Copy environment example and fill values:
+   
+   ```sh
+   cp .env.example .env
+   ```
+
+2. Install dependencies and run dev server:
+   
+   ```sh
+   npm i
+   npm run dev
+   ```
+
+3. Preview build (used by E2E/CI):
+   
+   ```sh
+   npm run build
+   npm run preview
+   ```
+
+## Environment Variables
+
+Create `.env` at repo root for the frontend (Vite). Do not commit secrets.
+
+Required frontend vars (see `.env.example`):
+
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
+- `VITE_STRIPE_PUBLIC_KEY`
+
+Backend (Supabase Edge Functions) secrets are configured in Supabase, not in this `.env`:
+
+- `STRIPE_SECRET_KEY`
+- `STRIPE_WEBHOOK_SECRET`
+- `OPENAI_API_KEY`
+- (optional) `SUPABASE_SERVICE_ROLE_KEY`
+
+## Testing
+
+- Unit (frontend):
+  
+  ```sh
+  npm run test
+  npm run test:coverage
+  ```
+
+- E2E (Playwright + Cucumber) against preview on port 4173:
+  
+  ```sh
+  npm run build
+  npm run e2e:serve &
+  E2E_BASE_URL=http://localhost:4173 npm run e2e
+  ```
+
+CI runs lint, unit with coverage, build, preview, and E2E. Deno tests for `supabase/functions` also run in CI.
+
 ## How can I deploy this project?
 
 Simply open [Lovable](https://lovable.dev/projects/d258f04a-30ab-4703-a822-9582e17745e8) and click on Share -> Publish.
