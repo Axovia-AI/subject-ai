@@ -1,5 +1,7 @@
 # Subject AI — Implementation Plan
 
+Last updated: 2025-08-11
+
 Generated from PRD at `docs/prd.md` and current repository state.
 
 ## 1) Confirmed Technology Stacks
@@ -59,7 +61,7 @@ Note: Estimates default to 3 days if unspecified.
   #1.4: Validate existing DB tables and migrations alignment [ ] (est: 1 day)
 
 #2: Testing and CI/CD pipeline [ ] (est: 3 days)
-  #2.1: Set up unit/integration tests for `supabase/functions/*` (deno/ts) [x] (est: 1 day)
+  #2.1: Set up unit/integration tests for `supabase/functions/*` (deno/ts) [ ] (est: 1 day) — scaffolded: frontend tests + CI done; Deno tests pending
   #2.2: Set up Playwright e2e for auth + paid flows (stub Stripe in test) [ ] (est: 1 day) [CURRENT-TASK]
   #2.3: GitHub Actions: run tests on PRs; deploy on main [ ] (est: 1 day)
 
@@ -106,6 +108,87 @@ Note: Estimates default to 3 days if unspecified.
 
 #13: Deployment and release checklist [ ] (est: 1 day)
   #13.1: Verify environments (dev/stage/prod) and release notes [ ] (est: 1 day)
+
+## 5) Testing & CI Details
+
+### Architecture Decisions
+- Frontend tests: Vitest (jsdom), React Testing Library, `@testing-library/jest-dom`.
+- Coverage: text + lcov; artifacts uploaded by CI.
+- JUnit test report generated for CI consumption.
+- Path alias `@` retained (Vite + Vitest config alignment).
+- Supabase Edge Functions: extract pure logic into `logic.ts` per function for unit tests; keep `index.ts` as thin I/O wrapper.
+
+### CI Plan (GitHub Actions)
+- Workflow: `.github/workflows/ci.yml`
+  - Frontend job (Node 18/20): `npm ci`, `npm run lint` (non-blocking initially), `npm run test:coverage` with JUnit; upload artifacts.
+  - Deno job: `deno fmt --check`, `deno lint`, `deno test` (placeholder until tests added); upload report if present.
+  - Triggers: push, pull_request, release (published).
+
+### Test Plan
+- Initial
+  - Unit: `src/lib/utils.test.ts` for `cn()`.
+  - Smoke: `src/pages/Index.test.tsx` (mocks `useAuth`; Supabase client mocked in setup).
+- Next
+  - Components: `Header`, Auth flow basics (no network), selected UI components.
+  - Edge Functions (Deno): extract pure logic to `logic.ts`; add `logic_test.ts` for `optimize-subject`, then other functions.
+
+### Notes
+- Lint currently reports errors across existing files; CI marks lint step as non-blocking to avoid disruption while tests ramp up.
+- Coverage will initially be low; focus is on establishing structure and increasing coverage steadily without blocking delivery.
+
+## 6) Stripe Monetization
+
+### Plan
+- Single Source of Truth for pricing: configure Stripe Price IDs and map tiers in one config consumed by Edge Functions and UI.
+- Wire Pricing page CTAs to subscription flow (invoke `create-checkout`).
+- Add "Manage Billing" entry point that calls `customer-portal` for subscribed users.
+- Verify success/cancel/return URLs for prod domain.
+- Optional: Add `stripe-webhook` to keep `subscribers` table authoritative.
+
+### Tasks
+- [ ] Price IDs config + tier mapping (SSOT)
+- [ ] Wire Pricing CTAs to `create-checkout`
+- [ ] Add Customer Portal button for subscribed users
+- [ ] Optional: Implement `stripe-webhook` with signature verification
+- [ ] Tests: subscription UI flow and context behavior
+
+### Status Imported
+- [x] Wire Pricing CTAs to `create-checkout`
+- [x] Add mapping helpers for STRIPE_PRICE_MAP in edge functions
+- [x] Implement `stripe-webhook` (scaffolded)
+
+### Requests to Human
+- Provide Stripe Price IDs per tier (or confirm single Premium price to start)
+- Provide production domain to set in success/cancel/return URLs
+- Confirm whether to include the webhook for v1 launch
+
+## 7) Backend Refactors for Testability
+- [ ] Refactor `supabase/functions/optimize-subject` → `logic.ts` + Deno tests
+- [ ] Mirror pattern for `check-subscription`, `create-checkout`, `customer-portal`
+- [ ] Address linter errors incrementally (types, hooks deps)
+
+## 8) Collaboration & Sync
+- Another agent (Augment AI Coding agent) collaborates on this repository.
+- Sync cadence: every 10 minutes, or at task boundaries.
+- Shared log: `docs/agents-sync-log.md`
+  - Format: `ISO timestamp | agent | phase/task | status | notes`.
+  - Before starting a task: add an entry with status `claimed`.
+  - On completion/handoff: add an entry with status `completed`/`handoff`.
+  - If conflicts are detected, pause and notify in the log and via PR comment.
+
+## 9) File Inventory (testing/CI effort)
+- Added:
+  - `vitest.config.ts`
+  - `src/setupTests.ts`
+  - `src/lib/utils.test.ts`
+  - `src/pages/Index.test.tsx`
+  - `.github/workflows/ci.yml`
+  - `docs/implementation-plan.md` (merged; see note in that file)
+- Updated:
+  - `package.json` (test scripts)
+
+## 10) Changelog
+- 2025-08-09: Initial test/CI setup, plan created, tests passing locally, CI configured.
 
 Note: Remember to update this plan after each completed task or subtask by:
 1. Checking off [ ] to [x].

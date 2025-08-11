@@ -1,4 +1,6 @@
-# Repository Testing & CI Implementation Plan
+> NOTE: This document has been merged into `docs/planning/implementation-plan.md` and is retained for historical reference. Please update the canonical plan only.
+
+# Repository Testing & CI Implementation Plan (merged; read-only)
 
 Last updated: 2025-08-09
 
