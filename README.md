@@ -108,12 +108,12 @@ Backend (Supabase Edge Functions) secrets are configured in Supabase, not in thi
   npm run test:coverage
   ```
 
-- E2E (Playwright + Cucumber) against preview on port 4173:
+- E2E (Playwright + Cucumber) against preview on port 5174:
   
   ```sh
   npm run build
   npm run e2e:serve &
-  E2E_BASE_URL=http://localhost:4173 npm run e2e
+  E2E_BASE_URL=http://localhost:5174 npm run e2e
   ```
 
 CI runs lint, unit with coverage, build, preview, and E2E. Deno tests for `supabase/functions` also run in CI.
