@@ -52,15 +52,15 @@ Generated from PRD at `docs/prd.md` and current repository state.
 ## 4) Tasks and Subtasks
 Note: Estimates default to 3 days if unspecified.
 
-#1: Foundation, environments, and access [ ] (est: 3 days) [CURRENT-TASK]
+#1: Foundation, environments, and access [ ] (est: 3 days)
   #1.1: Confirm stacks and project structure [ ] (est: 0.5 days)
   #1.2: Verify env vars (OpenAI, Stripe, Supabase keys) and secrets management [ ] (est: 0.5 days)
   #1.3: Document local dev and deployment flows (README updates) [ ] (est: 1 day)
   #1.4: Validate existing DB tables and migrations alignment [ ] (est: 1 day)
 
 #2: Testing and CI/CD pipeline [ ] (est: 3 days)
-  #2.1: Set up unit/integration tests for `supabase/functions/*` (deno/ts) [ ] (est: 1 day)
-  #2.2: Set up Playwright e2e for auth + paid flows (stub Stripe in test) [ ] (est: 1 day)
+  #2.1: Set up unit/integration tests for `supabase/functions/*` (deno/ts) [x] (est: 1 day)
+  #2.2: Set up Playwright e2e for auth + paid flows (stub Stripe in test) [ ] (est: 1 day) [CURRENT-TASK]
   #2.3: GitHub Actions: run tests on PRs; deploy on main [ ] (est: 1 day)
 
 #3: Feature – AI-generated subject suggestions (Implemented) [ ] (est: 2 days)
