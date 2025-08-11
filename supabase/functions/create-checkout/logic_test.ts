@@ -23,3 +23,23 @@ Deno.test("resolvePriceIdFromEnv resolves price id from plan name", () => {
     if (original) Deno.env.set("STRIPE_PRICE_MAP", original); else Deno.env.delete("STRIPE_PRICE_MAP");
   }
 });
+
+Deno.test("resolvePriceIdFromEnv supports monthly/annual plan keys", () => {
+  const original = Deno.env.get("STRIPE_PRICE_MAP");
+  try {
+    const map = {
+      "Starter:monthly": "price_month_starter",
+      "Starter:annual": "price_year_starter",
+      "Professional:monthly": "price_month_pro",
+      "Professional:annual": "price_year_pro"
+    };
+    Deno.env.set("STRIPE_PRICE_MAP", JSON.stringify(map));
+    assertEquals(resolvePriceIdFromEnv("Starter:monthly"), "price_month_starter");
+    assertEquals(resolvePriceIdFromEnv("Starter:annual"), "price_year_starter");
+    assertEquals(resolvePriceIdFromEnv("Professional:monthly"), "price_month_pro");
+    assertEquals(resolvePriceIdFromEnv("Professional:annual"), "price_year_pro");
+    assertEquals(resolvePriceIdFromEnv("Enterprise:monthly"), null);
+  } finally {
+    if (original) Deno.env.set("STRIPE_PRICE_MAP", original); else Deno.env.delete("STRIPE_PRICE_MAP");
+  }
+});
