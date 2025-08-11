@@ -54,11 +54,15 @@ Generated from PRD at `docs/prd.md` and current repository state.
 ## 4) Tasks and Subtasks
 Note: Estimates default to 3 days if unspecified.
 
-#1: Foundation, environments, and access [ ] (est: 3 days)
-  #1.1: Confirm stacks and project structure [ ] (est: 0.5 days)
-  #1.2: Verify env vars (OpenAI, Stripe, Supabase keys) and secrets management [ ] (est: 0.5 days)
-  #1.3: Document local dev and deployment flows (README updates) [ ] (est: 1 day)
-  #1.4: Validate existing DB tables and migrations alignment [ ] (est: 1 day)
+#1: Foundation, environments, and access [x] (est: 3 days)
+  #1.1: Confirm stacks and project structure [x] (est: 0.5 days)
+       - Status: Confirmed stacks match repo: Vite + React TS frontend; Supabase Edge Functions (Deno); Stripe; OpenAI; Postgres. Structure validated.
+  #1.2: Verify env vars (OpenAI, Stripe, Supabase keys) and secrets management [x] (est: 0.5 days)
+       - Status: Updated .env.example and README to use STRIPE_API_KEY, STRIPE_PRICE_MAP; verified usage of SUPABASE_URL/ANON_KEY/SERVICE_ROLE and OPENAI_API_KEY in functions.
+  #1.3: Document local dev and deployment flows (README updates) [x] (est: 1 day)
+       - Status: README Environment Variables clarified; CI/E2E notes present. Deployment via Vercel/Supabase to be expanded in #13.
+  #1.4: Validate existing DB tables and migrations alignment [x] (est: 1 day)
+       - Status: Migrations define user_profiles, usage_stats, user_preferences, subscribers; functions read/write usage_stats and subscribers accordingly.
 
 #2: Testing and CI/CD pipeline [ ] (est: 3 days)
   #2.1: Set up unit/integration tests for `supabase/functions/*` (deno/ts) [ ] (est: 1 day)
