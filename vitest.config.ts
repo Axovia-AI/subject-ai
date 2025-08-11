@@ -11,6 +11,17 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./src/setupTests.ts'],
     css: true,
+    // Only run unit/component tests here; Playwright e2e runs separately.
+    include: [
+      'src/**/*.{test,spec}.{ts,tsx}',
+      'tests/unit/**/*.{test,spec}.{ts,tsx}'
+    ],
+    exclude: [
+      'node_modules/**',
+      'dist/**',
+      'coverage/**',
+      'tests/e2e/**'
+    ],
     coverage: {
       reporter: ['text', 'lcov'],
       reportsDirectory: 'coverage',
