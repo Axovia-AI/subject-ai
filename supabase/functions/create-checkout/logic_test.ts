@@ -12,6 +12,29 @@ Deno.test("resolvePriceIdFromEnv returns null when map missing", () => {
   }
 });
 
+Deno.test("resolvePriceIdFromEnv returns null on invalid JSON map", () => {
+  const original = Deno.env.get("STRIPE_PRICE_MAP");
+  try {
+    Deno.env.set("STRIPE_PRICE_MAP", "not-json");
+    assertEquals(resolvePriceIdFromEnv("Starter:monthly"), null);
+  } finally {
+    if (original) Deno.env.set("STRIPE_PRICE_MAP", original); else Deno.env.delete("STRIPE_PRICE_MAP");
+  }
+});
+
+Deno.test("resolvePriceIdFromEnv returns null for missing or unknown planName", () => {
+  const original = Deno.env.get("STRIPE_PRICE_MAP");
+  try {
+    Deno.env.set("STRIPE_PRICE_MAP", JSON.stringify({ "Basic": "price_basic" }));
+    // @ts-expect-error testing undefined
+    assertEquals(resolvePriceIdFromEnv(undefined), null);
+    assertEquals(resolvePriceIdFromEnv("" as unknown as string), null);
+    assertEquals(resolvePriceIdFromEnv("Unknown"), null);
+  } finally {
+    if (original) Deno.env.set("STRIPE_PRICE_MAP", original); else Deno.env.delete("STRIPE_PRICE_MAP");
+  }
+});
+
 Deno.test("resolvePriceIdFromEnv resolves price id from plan name", () => {
   const original = Deno.env.get("STRIPE_PRICE_MAP");
   try {
