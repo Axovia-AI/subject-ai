@@ -44,6 +44,42 @@ jobs:
             junit.xml
           if-no-files-found: warn
 
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Build app for e2e
+        run: npm run build
+
+      - name: Start preview server
+        run: |
+          npm run e2e:serve &
+          echo $! > preview_pid
+
+      - name: Wait for preview to be ready
+        run: |
+          for i in {1..30}; do
+            if curl -sSf http://localhost:5174 > /dev/null; then
+              echo "Server is up"; exit 0; fi; sleep 2; done; exit 1
+
+      - name: Run e2e (Cucumber)
+        env:
+          E2E_BASE_URL: http://localhost:5174
+        run: npm run e2e
+
+      - name: Stop preview server
+        if: always()
+        run: |
+          if [ -f preview_pid ]; then kill $(cat preview_pid) || true; fi
+
+      - name: Generate frontend docs (TypeDoc)
+        run: npx typedoc --out docs-frontend src
+
+      - name: Upload frontend docs
+        uses: actions/upload-artifact@v4
+        with:
+          name: typedoc-frontend
+          path: docs-frontend
+
       - name: Job summary
         if: always()
         run: |
@@ -73,6 +109,15 @@ jobs:
 
       - name: Run Deno tests
         run: deno test -A supabase/functions || true
+
+      - name: Generate backend docs (deno doc)
+        run: deno doc --json supabase/functions > deno-doc.json
+
+      - name: Upload backend docs
+        uses: actions/upload-artifact@v4
+        with:
+          name: deno-doc-backend
+          path: deno-doc.json
 
       - name: Upload Deno test report (if exists)
         uses: actions/upload-artifact@v4

@@ -17,3 +17,24 @@ vi.mock('@/integrations/supabase/client', () => {
     },
   };
 });
+
+// jsdom does not implement matchMedia; polyfill for components relying on it (e.g., next-themes, sonner)
+// Some environments define the property but not as a function, so check type
+// lint-fix: none
+if (typeof window.matchMedia !== 'function') {
+  (window as any).matchMedia = vi.fn().mockImplementation((query: string) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(), // deprecated but some libs still call
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  }));
+}
+
+// Ensure globalThis also has matchMedia (some libs reference it via global scope)
+if (typeof (globalThis as any).matchMedia !== 'function') {
+  (globalThis as any).matchMedia = (window as any).matchMedia
+}
