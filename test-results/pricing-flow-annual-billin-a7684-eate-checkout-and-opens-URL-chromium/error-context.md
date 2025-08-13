@@ -1,0 +1,274 @@
+# Page snapshot
+
+```yaml
+- region "Notifications (F8)":
+  - list
+- banner:
+  - link "SubjectAI SubjectAI":
+    - /url: /
+    - img "SubjectAI"
+    - text: SubjectAI
+  - navigation:
+    - link "Features":
+      - /url: "#features"
+    - link "Pricing":
+      - /url: "#pricing"
+    - link "Reviews":
+      - /url: "#testimonials"
+  - button "Sign In"
+  - button "Start Free Trial"
+- img
+- text: AI-Powered Email Optimization
+- heading "Boost Your Email Open Rates by 40%" [level=1]
+- paragraph: Transform boring subject lines into compelling hooks that drive engagement. Our AI analyzes millions of high-performing emails to craft subject lines that get opened.
+- button "Get Started Free":
+  - text: Get Started Free
+  - img
+- button "Try Optimizer":
+  - img
+  - text: Try Optimizer
+- text: 40% Higher Open Rates 10K+ Emails Optimized 5-sec Processing Time
+- img "SubjectAI Dashboard"
+- img
+- img
+- img
+- text: Try It Now
+- heading "See the Magic in Action" [level=2]
+- paragraph: Enter any subject line below and watch our AI transform it into something that gets opened.
+- heading "AI Subject Line Optimizer (Demo)" [level=3]:
+  - img
+  - text: AI Subject Line Optimizer (Demo)
+- paragraph: Try our AI optimizer with any subject line
+- textbox "e.g., Weekly Newsletter Update"
+- button "Optimize" [disabled]:
+  - img
+  - text: Optimize
+- paragraph: Enter a subject line above to see AI optimization in action
+- text: Powerful Features
+- heading "Everything you need to optimize email performance" [level=2]
+- paragraph: Our AI analyzes your content, audience, and industry trends to generate subject lines that actually get opened.
+- img
+- heading "AI-Powered Generation" [level=3]
+- text: Core Feature
+- paragraph: Advanced GPT-4 model trained on millions of high-performing email subject lines
+- img
+- heading "A/B Testing Ready" [level=3]
+- text: Pro
+- paragraph: Generate multiple variations instantly for split testing your campaigns
+- img
+- heading "Performance Analytics" [level=3]
+- text: Analytics
+- paragraph: Track open rates, click-through rates, and ROI for each generated subject line
+- img
+- heading "Instant Generation" [level=3]
+- text: Speed
+- paragraph: Get 10+ subject line variations in under 3 seconds
+- img
+- heading "Industry Templates" [level=3]
+- text: Templates
+- paragraph: Pre-built templates for e-commerce, SaaS, newsletters, and more
+- img
+- heading "Spam Filter Safe" [level=3]
+- text: Security
+- paragraph: All suggestions are tested against major spam filters automatically
+- img
+- heading "Tone Customization" [level=3]
+- text: Customization
+- paragraph: Adjust for professional, casual, urgent, or friendly tones
+- img
+- heading "API Integration" [level=3]
+- text: Integration
+- paragraph: Connect with Mailchimp, ConvertKit, and 50+ email platforms
+- img
+- heading "24/7 Support" [level=3]
+- text: Support
+- paragraph: Round-the-clock customer support and optimization advice
+- text: Customer Success
+- heading "Trusted by 12,000+ marketers worldwide" [level=2]
+- paragraph: See how businesses like yours are transforming their email marketing with AI-powered subject line optimization.
+- img
+- img
+- img
+- img
+- img
+- img
+- paragraph: SubjectAI increased our email open rates from 18% to 47% in just two weeks. The ROI has been incredible - we've generated an extra $50k in revenue this quarter.
+- text: SC Sarah Chen Marketing Director at TechFlow SaaS
+- img
+- img
+- img
+- img
+- img
+- img
+- paragraph: I was skeptical about AI-generated subject lines, but the results speak for themselves. Our click-through rates doubled, and customer engagement is through the roof.
+- text: MR Marcus Rodriguez E-commerce Manager at FreshStyle Boutique
+- img
+- img
+- img
+- img
+- img
+- img
+- paragraph: As a solo entrepreneur, I don't have time to A/B test subject lines manually. SubjectAI does it all for me, and my subscriber growth has been phenomenal.
+- text: EW Emily Watson Newsletter Creator at The Daily Insight
+- img
+- img
+- img
+- img
+- img
+- img
+- paragraph: We use SubjectAI for all our portfolio companies. The time savings alone is worth it, but the performance improvements have been game-changing.
+- text: DP David Park Growth Lead at Startup Accelerator
+- img
+- img
+- img
+- img
+- img
+- img
+- paragraph: The industry-specific templates are brilliant. SubjectAI understands our retail audience and consistently generates subject lines that convert.
+- text: LT Lisa Thompson Email Marketing Specialist at Global Retail Corp
+- img
+- img
+- img
+- img
+- img
+- img
+- paragraph: In the healthcare industry, trust is everything. SubjectAI helps us craft professional, compliant subject lines that our doctors and patients actually open.
+- text: AK Alex Kumar Founder at MedTech Solutions 127% Avg. open rate increase 12,000+ Active users 50M+ Subject lines generated 4.9/5 Customer rating Simple Pricing
+- heading "Choose the plan that fits your needs" [level=2]
+- paragraph: Start free, upgrade when you need more. All plans include our core AI optimization features.
+- group "Billing period":
+  - button "Monthly"
+  - button "Annual Save 20%"
+- heading "Starter" [level=3]
+- text: $15/month
+- paragraph: Perfect for small businesses and freelancers
+- button "Get Started with Starter"
+- list:
+  - listitem:
+    - img
+    - text: 500 subject lines per month
+  - listitem:
+    - img
+    - text: Basic AI optimization
+  - listitem:
+    - img
+    - text: Email platform integrations
+  - listitem:
+    - img
+    - text: Performance tracking
+  - listitem:
+    - img
+    - text: Email support
+- img
+- text: Most Popular
+- heading "Professional" [level=3]
+- text: $39/month
+- paragraph: For growing businesses and marketing teams
+- button "Start Free Trial"
+- list:
+  - listitem:
+    - img
+    - text: 2,500 subject lines per month
+  - listitem:
+    - img
+    - text: Advanced AI with tone control
+  - listitem:
+    - img
+    - text: A/B testing recommendations
+  - listitem:
+    - img
+    - text: Industry-specific templates
+  - listitem:
+    - img
+    - text: Priority support
+  - listitem:
+    - img
+    - text: Team collaboration
+  - listitem:
+    - img
+    - text: Custom branding
+- heading "Enterprise" [level=3]
+- text: $119/month
+- paragraph: For large organizations with high volume needs
+- button "Get Started with Enterprise"
+- list:
+  - listitem:
+    - img
+    - text: Unlimited subject lines
+  - listitem:
+    - img
+    - text: Custom AI model training
+  - listitem:
+    - img
+    - text: White-label solution
+  - listitem:
+    - img
+    - text: API access
+  - listitem:
+    - img
+    - text: Dedicated account manager
+  - listitem:
+    - img
+    - text: Custom integrations
+  - listitem:
+    - img
+    - text: SLA guarantee
+- paragraph: All plans include a 14-day free trial. No credit card required.
+- text: 💳 Cancel anytime 🔒 Secure payments 📞 24/7 support
+- contentinfo:
+  - img "SubjectAI"
+  - text: SubjectAI
+  - paragraph: Transform your email marketing with AI-powered subject line optimization. Join thousands of marketers boosting their open rates.
+  - button:
+    - img
+  - button:
+    - img
+  - button:
+    - img
+  - heading "Product" [level=4]
+  - list:
+    - listitem:
+      - link "Features":
+        - /url: "#"
+    - listitem:
+      - link "Pricing":
+        - /url: "#"
+    - listitem:
+      - link "API":
+        - /url: "#"
+    - listitem:
+      - link "Integrations":
+        - /url: "#"
+    - listitem:
+      - link "Changelog":
+        - /url: "#"
+  - heading "Company" [level=4]
+  - list:
+    - listitem:
+      - link "About":
+        - /url: "#"
+    - listitem:
+      - link "Blog":
+        - /url: "#"
+    - listitem:
+      - link "Careers":
+        - /url: "#"
+    - listitem:
+      - link "Press":
+        - /url: "#"
+    - listitem:
+      - link "Contact":
+        - /url: "#"
+  - heading "Stay Updated" [level=4]
+  - paragraph: Get the latest tips and strategies for email marketing success.
+  - textbox "Enter your email"
+  - button:
+    - img
+  - paragraph: © 2024 SubjectAI. All rights reserved.
+  - link "Privacy Policy":
+    - /url: "#"
+  - link "Terms of Service":
+    - /url: "#"
+  - link "Cookie Policy":
+    - /url: "#"
+```

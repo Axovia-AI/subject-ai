@@ -120,15 +120,28 @@ Backend (Supabase Edge Functions) secrets are configured in Supabase, not in thi
 CI runs lint, unit with coverage, build, preview, and E2E. Deno tests for `supabase/functions` also run in CI.
 ## Supabase Secrets Quickstart
 
-Set these in your Supabase project (Setttings > Config > Secrets):
+Set these in your Supabase project (Settings > Configuration > Secrets):
 - STRIPE_API_KEY
 - STRIPE_WEBHOOK_SECRET
-- STRIPE_PRICE_MAP (JSON like {"Starter:monthly":"price_x","Starter:annual":"price_y"})
+- STRIPE_PRICE_MAP (JSON like {"Starter":"price_x","Professional":"price_y"})
 - OPENAI_API_KEY
 - SUPABASE_SERVICE_ROLE_KEY (optional; required for functions writing to DB)
 
 Also set environment variables SUPABASE_URL and SUPABASE_ANON_KEY for functions that authenticate users or perform reads.
 
+
+## Using the Makefile
+
+- Setup local test deps:
+  - make test-deps
+- Run frontend unit tests (Vitest):
+  - make test-unit
+- Run E2E tests (Playwright):
+  - make test-e2e
+- Run Deno tests (Supabase functions):
+  - make test-deno
+
+For full production setup, see docs/production-setup.md.
 
 ## How can I deploy this project?
 

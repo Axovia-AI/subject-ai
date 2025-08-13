@@ -4,10 +4,9 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Pricing yearly toggle', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
-    await page.getByRole('link', { name: /pricing/i }).first().click({ trial: true }).catch(() => {});
-    // If no anchor link, just rely on home containing pricing section.
-    await expect(page.getByText(/choose the plan that fits your needs/i)).toBeVisible();
+    await page.goto('/#pricing');
+    await page.waitForLoadState('networkidle');
+    await expect(page.getByTestId('billing-monthly')).toBeVisible({ timeout: 20000 });
   });
 
   test('Annual toggle applies 20% discount to visible prices', async ({ page }) => {

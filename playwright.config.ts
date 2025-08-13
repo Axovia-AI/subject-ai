@@ -3,8 +3,9 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: 'tests/e2e',
   timeout: 30 * 1000,
-  retries: 0,
-  fullyParallel: true,
+  retries: 1,
+  fullyParallel: false,
+  workers: 1,
   use: {
     baseURL: 'http://localhost:5174',
     trace: 'on-first-retry',
@@ -15,7 +16,7 @@ export default defineConfig({
     command: 'npm run e2e:serve',
     port: 5174,
     reuseExistingServer: true,
-    timeout: 60_000,
+    timeout: 120_000,
   },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },

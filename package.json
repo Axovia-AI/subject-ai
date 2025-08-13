@@ -12,10 +12,10 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "e2e:serve": "vite preview --port 5174",
+    "e2e:serve": "sh -c 'VITE_E2E=true vite build && vite preview --port 5174'",
     "e2e": "npx @cucumber/cucumber --require features/steps/**/*.js --publish-quiet",
-    "e2e:pw": "playwright test",
-    "e2e:pw:ui": "playwright test --ui",
+    "e2e:pw": "VITE_E2E=true playwright test",
+    "e2e:pw:ui": "VITE_E2E=true playwright test --ui",
     "docs:frontend": "typedoc"
   },
   "dependencies": {
