@@ -31,3 +31,7 @@ A shared log for collaboration between agents (Cascade, Augment AI Coding agent)
 2025-08-11T19:23:10-04:00 | Cascade | Decision | resolved | Per user: Augment shifts to #2.3; Cascade owns #2.1 (Deno tests) and #2.2 (auth + paid e2e). Proceeding accordingly.
 
 2025-08-11T10:40:00-04:00 | Augment | #2.3: Deploy on main (CI) | completed | Added deploy job to CI to publish Supabase Edge Functions on push to main. Awaiting SUPABASE_ACCESS_TOKEN and SUPABASE_PROJECT_REF secrets to run.
+
+2025-08-13T11:30:00-04:00 | Augment | Stripe pricing/secrets setup | handoff | Per user request, handing off to other agent. Standing by to pick up next task (e.g., #3.1 optimize-subject tests, #6.2 hardening, or #7.1 webhook/check-subscription tests).
+
+2025-08-13T11:42:00-04:00 | Augment | #3.1 optimize-subject tests | claimed | Adding tests for default tone, no-context placeholder, empty/non-string outputs; will run Deno tests and update plan.

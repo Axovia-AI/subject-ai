@@ -18,21 +18,53 @@ serve(async (req) => {
   }
 
   try {
-    const stripeKey = Deno.env.get("STRIPE_API_KEY");
-    const webhookSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET");
-    if (!stripeKey) throw new Error("STRIPE_API_KEY is not set");
-    if (!webhookSecret) throw new Error("STRIPE_WEBHOOK_SECRET is not set");
-
-    const stripe = new Stripe(stripeKey, { apiVersion: "2023-10-16" });
+    // Load both live and test secrets/keys so we can handle either mode
+    const liveKey = Deno.env.get("STRIPE_API_KEY");
+    const testKey = Deno.env.get("STRIPE_TEST_KEY");
+    const liveWebhookSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET");
+    const testWebhookSecret = Deno.env.get("STRIPE_TEST_WEBHOOK_SECRET");
+    if (!liveWebhookSecret && !testWebhookSecret) {
+      throw new Error("No webhook secret configured. Set STRIPE_WEBHOOK_SECRET and/or STRIPE_TEST_WEBHOOK_SECRET");
+    }
 
     const bodyText = await req.text();
     const sig = req.headers.get("stripe-signature") || "";
 
     let event: Stripe.Event;
-    try {
-      event = stripe.webhooks.constructEvent(bodyText, sig, webhookSecret);
-    } catch (err) {
-      logStep("Invalid signature", { message: (err as Error).message });
+    // Try to verify against test secret first, then live (order doesn't matter much)
+    const verifier = new Stripe(liveKey || testKey || "", { apiVersion: "2023-10-16" }).webhooks;
+    const trySecrets: Array<{ label: string; secret?: string | null }> = [
+      { label: "test", secret: testWebhookSecret },
+      { label: "live", secret: liveWebhookSecret },
+    ];
+    let lastErr: unknown = null;
+    for (const s of trySecrets) {
+      if (!s.secret) continue;
+      try {
+        event = verifier.constructEvent(bodyText, sig, s.secret);
+        logStep("Signature verified", { using: s.label, eventType: event.type, id: event.id });
+        // Successfully verified
+        // Pick the appropriate API key based on livemode
+        const keyToUse = event.livemode ? liveKey : testKey;
+        if (!keyToUse) {
+          throw new Error(`Missing API key for ${event.livemode ? "live" : "test"} mode`);
+        }
+        // Recreate Stripe client with the correct key for any follow-up API calls
+        var stripe = new Stripe(keyToUse, { apiVersion: "2023-10-16" });
+        // break out with event and stripe set
+        // deno-lint-ignore no-explicit-any
+        (globalThis as any)._stripe_client = stripe; // helper to keep reference in this scope
+        break;
+      } catch (err) {
+        lastErr = err;
+        continue;
+      }
+    }
+    // If event is still undefined, both secrets failed
+    // deno-lint-ignore no-explicit-any
+    const stripe = (globalThis as any)._stripe_client as Stripe | undefined;
+    if (!stripe || !event) {
+      logStep("Invalid signature", { message: (lastErr as Error)?.message });
       return new Response("Invalid signature", { status: 400 });
     }
 

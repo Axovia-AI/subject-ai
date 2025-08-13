@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="8" failures="0" errors="0" time="0.661170791">
-    <testsuite name="src/components/Header.test.tsx" timestamp="2025-08-11T22:05:58.606Z" hostname="Mac.home" tests="2" failures="0" errors="0" skipped="0" time="0.109227583">
-        <testcase classname="src/components/Header.test.tsx" name="Header &gt; renders unauthenticated actions when no user session" time="0.079867625">
+<testsuites name="vitest tests" tests="8" failures="0" errors="0" time="0.633358251">
+    <testsuite name="src/components/Header.test.tsx" timestamp="2025-08-13T13:55:46.493Z" hostname="Stephens-MacBook-Air.local" tests="2" failures="0" errors="0" skipped="0" time="0.14811925">
+        <testcase classname="src/components/Header.test.tsx" name="Header &gt; renders unauthenticated actions when no user session" time="0.114705959">
         </testcase>
-        <testcase classname="src/components/Header.test.tsx" name="Header &gt; renders authenticated actions when user session exists" time="0.028025792">
-        </testcase>
-    </testsuite>
-    <testsuite name="src/lib/utils.test.ts" timestamp="2025-08-11T22:05:58.607Z" hostname="Mac.home" tests="2" failures="0" errors="0" skipped="0" time="0.009835">
-        <testcase classname="src/lib/utils.test.ts" name="cn &gt; merges class names and ignores falsy values" time="0.007311083">
-        </testcase>
-        <testcase classname="src/lib/utils.test.ts" name="cn &gt; deduplicates conflicting tailwind classes" time="0.001139667">
+        <testcase classname="src/components/Header.test.tsx" name="Header &gt; renders authenticated actions when user session exists" time="0.031892708">
         </testcase>
     </testsuite>
-    <testsuite name="src/pages/Auth.test.tsx" timestamp="2025-08-11T22:05:58.607Z" hostname="Mac.home" tests="2" failures="0" errors="0" skipped="0" time="0.415861833">
-        <testcase classname="src/pages/Auth.test.tsx" name="Auth page &gt; allows login form input and calls supabase signInWithPassword on submit" time="0.268074292">
+    <testsuite name="src/pages/Auth.test.tsx" timestamp="2025-08-13T13:55:46.493Z" hostname="Stephens-MacBook-Air.local" tests="2" failures="0" errors="0" skipped="0" time="0.335803375">
+        <testcase classname="src/pages/Auth.test.tsx" name="Auth page &gt; allows login form input and calls supabase signInWithPassword on submit" time="0.216463458">
         </testcase>
-        <testcase classname="src/pages/Auth.test.tsx" name="Auth page &gt; switches to signup tab and calls supabase signUp on submit" time="0.146561584">
-        </testcase>
-    </testsuite>
-    <testsuite name="src/pages/Index.test.tsx" timestamp="2025-08-11T22:05:58.607Z" hostname="Mac.home" tests="1" failures="0" errors="0" skipped="0" time="0.094584">
-        <testcase classname="src/pages/Index.test.tsx" name="Index page &gt; renders hero content" time="0.093731333">
+        <testcase classname="src/pages/Auth.test.tsx" name="Auth page &gt; switches to signup tab and calls supabase signUp on submit" time="0.118705041">
         </testcase>
     </testsuite>
-    <testsuite name="tests/unit/frontend/smoke.test.tsx" timestamp="2025-08-11T22:05:58.608Z" hostname="Mac.home" tests="1" failures="0" errors="0" skipped="0" time="0.031662375">
-        <testcase classname="tests/unit/frontend/smoke.test.tsx" name="UI smoke &gt; renders landing content" time="0.030907542">
+    <testsuite name="src/pages/Index.test.tsx" timestamp="2025-08-13T13:55:46.493Z" hostname="Stephens-MacBook-Air.local" tests="1" failures="0" errors="0" skipped="0" time="0.096459542">
+        <testcase classname="src/pages/Index.test.tsx" name="Index page &gt; renders hero content" time="0.094974209">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/lib/utils.test.ts" timestamp="2025-08-13T13:55:46.493Z" hostname="Stephens-MacBook-Air.local" tests="2" failures="0" errors="0" skipped="0" time="0.015170792">
+        <testcase classname="src/lib/utils.test.ts" name="cn &gt; merges class names and ignores falsy values" time="0.013424291">
+        </testcase>
+        <testcase classname="src/lib/utils.test.ts" name="cn &gt; deduplicates conflicting tailwind classes" time="0.000683375">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/frontend/smoke.test.tsx" timestamp="2025-08-13T13:55:46.494Z" hostname="Stephens-MacBook-Air.local" tests="1" failures="0" errors="0" skipped="0" time="0.037805292">
+        <testcase classname="tests/unit/frontend/smoke.test.tsx" name="UI smoke &gt; renders landing content" time="0.036434541">
         </testcase>
     </testsuite>
 </testsuites>

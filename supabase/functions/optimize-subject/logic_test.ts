@@ -30,3 +30,18 @@ Deno.test("parseOptimizedSubjects rejects non-array JSON", () => {
 Deno.test("parseOptimizedSubjects rejects arrays with empty strings", () => {
   assertThrows(() => parseOptimizedSubjects('["ok", " "]'), Error, "Every subject line must be a non-empty string");
 });
+
+
+Deno.test("buildPrompt defaults tone to professional and adds placeholder when no context", () => {
+  const p = buildPrompt("Hello");
+  assert(p.includes('Desired tone: professional'));
+  assert(p.includes('Email context: No additional context provided'));
+});
+
+Deno.test("parseOptimizedSubjects rejects empty array", () => {
+  assertThrows(() => parseOptimizedSubjects('[]'), Error, "must contain at least 1 subject line");
+});
+
+Deno.test("parseOptimizedSubjects rejects arrays with non-string items", () => {
+  assertThrows(() => parseOptimizedSubjects('["ok", 2]'), Error, "Every subject line must be a non-empty string");
+});
