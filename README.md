@@ -63,20 +63,20 @@ This project is built with:
 ## Quickstart (Local)
 
 1. Copy environment example and fill values:
-   
+
    ```sh
    cp .env.example .env
    ```
 
 2. Install dependencies and run dev server:
-   
+
    ```sh
    npm i
    npm run dev
    ```
 
 3. Preview build (used by E2E/CI):
-   
+
    ```sh
    npm run build
    npm run preview
@@ -94,22 +94,23 @@ Required frontend vars (see `.env.example`):
 
 Backend (Supabase Edge Functions) secrets are configured in Supabase, not in this `.env`:
 
-- `STRIPE_SECRET_KEY`
+- `STRIPE_API_KEY`
 - `STRIPE_WEBHOOK_SECRET`
+- `STRIPE_PRICE_MAP` (JSON map; e.g., {"Starter:monthly":"price_x","Starter:annual":"price_y"})
 - `OPENAI_API_KEY`
 - (optional) `SUPABASE_SERVICE_ROLE_KEY`
 
 ## Testing
 
 - Unit (frontend):
-  
+
   ```sh
   npm run test
   npm run test:coverage
   ```
 
 - E2E (Playwright + Cucumber) against preview on port 5174:
-  
+
   ```sh
   npm run build
   npm run e2e:serve &
@@ -117,6 +118,17 @@ Backend (Supabase Edge Functions) secrets are configured in Supabase, not in thi
   ```
 
 CI runs lint, unit with coverage, build, preview, and E2E. Deno tests for `supabase/functions` also run in CI.
+## Supabase Secrets Quickstart
+
+Set these in your Supabase project (Setttings > Config > Secrets):
+- STRIPE_API_KEY
+- STRIPE_WEBHOOK_SECRET
+- STRIPE_PRICE_MAP (JSON like {"Starter:monthly":"price_x","Starter:annual":"price_y"})
+- OPENAI_API_KEY
+- SUPABASE_SERVICE_ROLE_KEY (optional; required for functions writing to DB)
+
+Also set environment variables SUPABASE_URL and SUPABASE_ANON_KEY for functions that authenticate users or perform reads.
+
 
 ## How can I deploy this project?
 

@@ -6,6 +6,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
+import { useMemo, useState } from "react";
 
 const Pricing = () => {
   const plans = [
@@ -58,14 +59,45 @@ const Pricing = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  // billingPeriod controls pricing display and checkout mapping.
+  const [billingPeriod, setBillingPeriod] = useState<"monthly" | "annual">("monthly");
+
+  const discountedPlans = useMemo(() => {
+    if (billingPeriod === "monthly") return plans;
+    // Annual: show 20% off the monthly price as the per-month cost when billed annually
+    return plans.map((p) => ({
+      ...p,
+      price: Math.round(p.price * 0.8),
+    }));
+  }, [billingPeriod, plans]);
+
   const startCheckout = async (planName: string) => {
     try {
+      const planKey = `${planName}:${billingPeriod}`
+      const isE2E = import.meta.env.VITE_E2E === 'true'
+
+      // In E2E mode, bypass auth and call the function endpoint directly so the test route mock can intercept.
+      if (isE2E) {
+        const resp = await fetch('/functions/v1/create-checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ planName: planKey })
+        })
+        if (!resp.ok) throw new Error(`E2E checkout failed: ${resp.status}`)
+        const data = await resp.json()
+        if (data?.url) window.open(data.url, '_blank')
+        return
+      }
+
       if (!user) {
         navigate('/auth');
         return;
       }
+
       const { data, error } = await supabase.functions.invoke('create-checkout', {
-        body: { planName }
+        // Include period in planName so STRIPE_PRICE_MAP can distinguish, e.g.
+        // { "Professional:monthly": "price_123", "Professional:annual": "price_abc" }
+        body: { planName: planKey }
       });
       if (error) throw error;
       window.open(data.url, '_blank');
@@ -89,18 +121,30 @@ const Pricing = () => {
             Start free, upgrade when you need more. All plans include our core AI optimization features.
           </p>
           
-          <div className="inline-flex items-center gap-4 p-1 bg-muted rounded-lg">
-            <Button variant="secondary" size="sm" className="bg-background shadow-sm">
+          <div className="inline-flex items-center gap-1 p-1 bg-muted rounded-lg" role="group" aria-label="Billing period">
+            <Button
+              data-testid="billing-monthly"
+              variant={billingPeriod === 'monthly' ? "secondary" : "ghost"}
+              size="sm"
+              className={billingPeriod === 'monthly' ? "bg-background shadow-sm" : undefined}
+              onClick={() => setBillingPeriod('monthly')}
+            >
               Monthly
             </Button>
-            <Button variant="ghost" size="sm">
+            <Button
+              data-testid="billing-annual"
+              variant={billingPeriod === 'annual' ? "secondary" : "ghost"}
+              size="sm"
+              className={billingPeriod === 'annual' ? "bg-background shadow-sm" : undefined}
+              onClick={() => setBillingPeriod('annual')}
+            >
               Annual <Badge className="ml-1 bg-primary">Save 20%</Badge>
             </Button>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {plans.map((plan, index) => (
+          {discountedPlans.map((plan, index) => (
             <Card 
               key={index} 
               className={`relative group transition-all duration-300 ${
@@ -122,7 +166,7 @@ const Pricing = () => {
                 <CardTitle className="text-2xl font-bold text-foreground mb-2">
                   {plan.name}
                 </CardTitle>
-                <div className="mb-4">
+                <div className="mb-4" data-testid={`price-${plan.name.toLowerCase()}`}>
                   <span className="text-4xl font-bold text-foreground">${plan.price}</span>
                   <span className="text-muted-foreground">/month</span>
                 </div>
