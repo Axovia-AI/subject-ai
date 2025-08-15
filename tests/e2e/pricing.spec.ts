@@ -6,6 +6,11 @@ test.describe('Pricing yearly toggle', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/#pricing');
     await page.waitForLoadState('networkidle');
+    // Log browser console to help debug rendering issues
+    page.on('console', (msg) => console.log(`[browser:${msg.type()}]`, msg.text()));
+    // Ensure pricing section has mounted and is in view
+    await page.waitForSelector('section#pricing', { timeout: 20000 });
+    await page.locator('section#pricing').scrollIntoViewIfNeeded();
     await expect(page.getByTestId('billing-monthly')).toBeVisible({ timeout: 20000 });
   });
 
