@@ -1,6 +1,6 @@
 # Subject AI — Implementation Plan
 
-Last updated: 2025-08-11
+Last updated: 2025-08-15
 
 Generated from PRD at `docs/prd.md` and current repository state.
 
@@ -67,7 +67,7 @@ Note: Estimates default to 3 days if unspecified.
 #2: Testing and CI/CD pipeline [ ] (est: 3 days)
   #2.1: Set up unit/integration tests for `supabase/functions/*` (deno/ts) [ ] (est: 1 day)
        - Status: Frontend unit tests + CI are in place; Deno function tests exist for some functions; expansion pending.
-  #2.2: Set up Playwright e2e for auth + paid flows (stub Stripe in test) [in-progress] (est: 1 day) [CURRENT-TASK]
+  #2.2: Set up Playwright e2e for auth + paid flows (stub Stripe in test) [in-progress] (est: 1 day) [CHECKED OUT: cascade-01 @2025-08-15T15:08:49-04:00]
        - Status: Playwright configured; smoke + pricing toggle tests added; Cucumber pricing feature aligned with UI; E2E bypass path added for checkout. Enhanced paid flow tests in `tests/e2e/pricing-flow.spec.ts` to cover monthly/annual payloads and assert checkout popup URL via route stubs. Next: run locally (install Playwright browsers) and ensure CI green with VITE_E2E build.
   #2.3: GitHub Actions: run tests on PRs; deploy on main [ ] (est: 1 day)
        - Status: CI green after updating e2e build with VITE_E2E and artifact action versions; deploy step pending.
