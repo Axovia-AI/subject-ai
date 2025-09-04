@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Separator } from "@/components/ui/separator";
-import { Sparkles, Copy, CheckCircle, AlertCircle, Loader2, Lightbulb, TrendingUp, Zap, History } from 'lucide-react';
+import { Sparkles, Copy, CheckCircle, AlertCircle, Loader2, Lightbulb, TrendingUp, Zap, History, BarChart3, Target, Star } from 'lucide-react';
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
@@ -19,8 +19,24 @@ interface OptimizedResult {
   success: boolean;
 }
 
+interface ScoreBreakdown {
+  length: { score: number; max: number; feedback: string };
+  engagement: { score: number; max: number; feedback: string };
+  clarity: { score: number; max: number; feedback: string };
+  spam: { score: number; max: number; feedback: string };
+  polish: { score: number; max: number; feedback: string };
+}
+
+interface ScoreResult {
+  score: number;
+  rationale: string;
+  breakdown: ScoreBreakdown;
+  suggestions: string[];
+}
+
 interface UsageStats {
   optimized_count: number;
+  scored_count?: number;
   total_emails_sent: number;
 }
 
@@ -51,11 +67,14 @@ export const EmailOptimizer = () => {
   const [emailContext, setEmailContext] = useState('');
   const [tone, setTone] = useState('professional');
   const [isOptimizing, setIsOptimizing] = useState(false);
+  const [isScoring, setIsScoring] = useState(false);
   const [results, setResults] = useState<OptimizedResult | null>(null);
+  const [scoreResult, setScoreResult] = useState<ScoreResult | null>(null);
   const [error, setError] = useState('');
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [usageStats, setUsageStats] = useState<UsageStats | null>(null);
   const [showTips, setShowTips] = useState(false);
+  const [activeTab, setActiveTab] = useState<'optimize' | 'score'>('optimize');
   
   const { toast } = useToast();
   const { user } = useAuth();
@@ -75,7 +94,7 @@ export const EmailOptimizer = () => {
       const today = new Date().toISOString().split('T')[0];
       const { data, error } = await supabase
         .from('usage_stats')
-        .select('optimized_count, total_emails_sent')
+        .select('optimized_count, scored_count, total_emails_sent')
         .eq('user_id', user.id)
         .eq('date', today)
         .single();
@@ -97,6 +116,71 @@ export const EmailOptimizer = () => {
     setTone(example.tone);
     setError('');
     setResults(null);
+    setScoreResult(null);
+  };
+
+  // Handle scoring request
+  const handleScore = async () => {
+    if (!originalSubject.trim()) {
+      setError('Please enter a subject line to score');
+      return;
+    }
+
+    if (!user) {
+      setError('Please sign in to use the scoring feature');
+      return;
+    }
+
+    setIsScoring(true);
+    setError('');
+    setScoreResult(null);
+
+    try {
+      // Get the current session token for authentication
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        throw new Error('Authentication required');
+      }
+
+      // Call the score-subject edge function
+      const { data, error } = await supabase.functions.invoke('score-subject', {
+        body: {
+          subject: originalSubject.trim(),
+          context: emailContext.trim() || undefined,
+          tone: tone,
+        },
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      if (data.success) {
+        setScoreResult(data.result);
+        // Reload usage stats after successful scoring
+        loadUsageStats();
+        toast({
+          title: "Subject line scored!",
+          description: `Score: ${data.result.score}/100`,
+        });
+      } else {
+        throw new Error(data.error || 'Failed to score subject line');
+      }
+    } catch (error: any) {
+      console.error('Scoring error:', error);
+      setError(error.message || 'Failed to score subject line. Please try again.');
+      toast({
+        title: "Scoring failed",
+        description: "Please check your input and try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsScoring(false);
+    }
   };
 
   // Handle optimization request
@@ -183,6 +267,26 @@ export const EmailOptimizer = () => {
     }
   };
 
+  // Get score color based on score value
+  const getScoreColor = (score: number): string => {
+    if (score >= 90) return "text-green-600 bg-green-50 border-green-200";
+    if (score >= 80) return "text-green-600 bg-green-50 border-green-200";
+    if (score >= 70) return "text-blue-600 bg-blue-50 border-blue-200";
+    if (score >= 60) return "text-yellow-600 bg-yellow-50 border-yellow-200";
+    if (score >= 50) return "text-orange-600 bg-orange-50 border-orange-200";
+    return "text-red-600 bg-red-50 border-red-200";
+  };
+
+  // Get score level text
+  const getScoreLevel = (score: number): string => {
+    if (score >= 90) return "Exceptional";
+    if (score >= 80) return "Very Good";
+    if (score >= 70) return "Good";
+    if (score >= 60) return "Average";
+    if (score >= 50) return "Below Average";
+    return "Poor";
+  };
+
   return (
     <div className="space-y-6">
       {/* Usage Stats Banner */}
@@ -197,6 +301,9 @@ export const EmailOptimizer = () => {
                 </div>
                 <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
                   {usageStats.optimized_count} optimizations
+                </Badge>
+                <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
+                  {usageStats.scored_count || 0} scored
                 </Badge>
               </div>
               <Button
@@ -240,12 +347,37 @@ export const EmailOptimizer = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-primary" />
-            Email Subject Line Optimizer
-          </CardTitle>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-primary" />
+              <CardTitle>Email Subject Line Tools</CardTitle>
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant={activeTab === 'optimize' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setActiveTab('optimize')}
+                className="flex items-center gap-2"
+              >
+                <Sparkles className="w-4 h-4" />
+                Optimize
+              </Button>
+              <Button
+                variant={activeTab === 'score' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setActiveTab('score')}
+                className="flex items-center gap-2"
+              >
+                <BarChart3 className="w-4 h-4" />
+                Score
+              </Button>
+            </div>
+          </div>
           <CardDescription>
-            Enter your original subject line and let our AI suggest optimized alternatives to improve open rates.
+            {activeTab === 'optimize' 
+              ? "Enter your original subject line and let our AI suggest optimized alternatives to improve open rates."
+              : "Get a detailed score and analysis of your subject line's effectiveness."
+            }
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -326,23 +458,43 @@ export const EmailOptimizer = () => {
             )}
 
             <div className="flex gap-3">
-              <Button
-                onClick={handleOptimize} 
-                disabled={isOptimizing || !originalSubject.trim()}
-                className="flex-1"
-              >
-                {isOptimizing ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Optimizing...
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="w-4 h-4 mr-2" />
-                    Optimize Subject Line
-                  </>
-                )}
-              </Button>
+              {activeTab === 'optimize' ? (
+                <Button
+                  onClick={handleOptimize} 
+                  disabled={isOptimizing || !originalSubject.trim()}
+                  className="flex-1"
+                >
+                  {isOptimizing ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Optimizing...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="w-4 h-4 mr-2" />
+                      Optimize Subject Line
+                    </>
+                  )}
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleScore} 
+                  disabled={isScoring || !originalSubject.trim()}
+                  className="flex-1"
+                >
+                  {isScoring ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Scoring...
+                    </>
+                  ) : (
+                    <>
+                      <BarChart3 className="w-4 h-4 mr-2" />
+                      Score Subject Line
+                    </>
+                  )}
+                </Button>
+              )}
               {originalSubject && (
                 <Button
                   variant="outline"
@@ -350,6 +502,7 @@ export const EmailOptimizer = () => {
                     setOriginalSubject('');
                     setEmailContext('');
                     setResults(null);
+                    setScoreResult(null);
                     setError('');
                   }}
                 >
@@ -460,6 +613,99 @@ export const EmailOptimizer = () => {
                     <li>• Track open rates to measure performance</li>
                     <li>• A/B test different versions with your audience</li>
                     <li>• Save high-performing subjects for future reference</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Score Results */}
+      {scoreResult && (
+        <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Target className="w-5 h-5 text-primary" />
+              Subject Line Score Analysis
+            </CardTitle>
+            <CardDescription>
+              Detailed breakdown of your subject line's performance potential.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Overall Score */}
+            <div className="text-center">
+              <div className={`inline-flex items-center justify-center w-20 h-20 rounded-full border-4 ${getScoreColor(scoreResult.score)}`}>
+                <span className="text-2xl font-bold">{scoreResult.score}</span>
+              </div>
+              <div className="mt-2">
+                <h3 className="text-lg font-semibold">{getScoreLevel(scoreResult.score)}</h3>
+                <p className="text-sm text-muted-foreground">Overall Score</p>
+              </div>
+            </div>
+
+            {/* Score Breakdown */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+              {Object.entries(scoreResult.breakdown).map(([key, data]) => {
+                const percentage = Math.round((data.score / data.max) * 100);
+                const capitalizedKey = key.charAt(0).toUpperCase() + key.slice(1);
+                
+                return (
+                  <div key={key} className="bg-background/50 rounded-lg p-4 border">
+                    <div className="text-center mb-2">
+                      <div className="text-sm font-medium text-muted-foreground">{capitalizedKey}</div>
+                      <div className="text-lg font-bold">{data.score}/{data.max}</div>
+                      <div className="text-xs text-muted-foreground">{percentage}%</div>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div 
+                        className={`h-2 rounded-full ${percentage >= 80 ? 'bg-green-500' : percentage >= 60 ? 'bg-yellow-500' : 'bg-red-500'}`}
+                        style={{ width: `${percentage}%` }}
+                      ></div>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-2">{data.feedback}</p>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Rationale */}
+            <Alert>
+              <Star className="h-4 w-4" />
+              <AlertDescription>
+                <strong>Analysis:</strong> {scoreResult.rationale}
+              </AlertDescription>
+            </Alert>
+
+            {/* Suggestions */}
+            {scoreResult.suggestions.length > 0 && (
+              <div className="space-y-3">
+                <h4 className="font-medium flex items-center gap-2">
+                  <Lightbulb className="w-4 h-4 text-primary" />
+                  Improvement Suggestions
+                </h4>
+                <div className="space-y-2">
+                  {scoreResult.suggestions.map((suggestion, index) => (
+                    <div key={index} className="flex items-start gap-2 text-sm p-3 bg-background/50 rounded-lg border">
+                      <TrendingUp className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                      <span>{suggestion}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="pt-4 border-t border-border/50">
+              <div className="flex items-start gap-3 text-sm text-muted-foreground">
+                <History className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="font-medium text-foreground mb-1">Next Steps:</p>
+                  <ul className="space-y-1 text-xs">
+                    <li>• Use this score to compare different subject line options</li>
+                    <li>• Focus on improving the lowest-scoring areas</li>
+                    <li>• A/B test variations to validate performance predictions</li>
+                    <li>• Aim for scores above 70 for better open rates</li>
                   </ul>
                 </div>
               </div>
