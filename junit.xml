@@ -1,29 +1,150 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="8" failures="0" errors="0" time="1.268379786">
-    <testsuite name="src/components/Header.test.tsx" timestamp="2025-09-04T16:49:25.314Z" hostname="pkrvm7jw40e0xgp" tests="2" failures="0" errors="0" skipped="0" time="0.20754672">
-        <testcase classname="src/components/Header.test.tsx" name="Header &gt; renders unauthenticated actions when no user session" time="0.133338918">
+<testsuites name="vitest tests" tests="15" failures="0" errors="0" time="1.973477901">
+    <testsuite name="src/components/Header.test.tsx" timestamp="2025-09-04T17:00:55.244Z" hostname="pkrvm7jw40e0xgp" tests="2" failures="0" errors="0" skipped="0" time="0.198438483">
+        <testcase classname="src/components/Header.test.tsx" name="Header &gt; renders unauthenticated actions when no user session" time="0.134885821">
         </testcase>
-        <testcase classname="src/components/Header.test.tsx" name="Header &gt; renders authenticated actions when user session exists" time="0.070578826">
-        </testcase>
-    </testsuite>
-    <testsuite name="src/lib/utils.test.ts" timestamp="2025-09-04T16:49:25.316Z" hostname="pkrvm7jw40e0xgp" tests="2" failures="0" errors="0" skipped="0" time="0.007283108">
-        <testcase classname="src/lib/utils.test.ts" name="cn &gt; merges class names and ignores falsy values" time="0.005484125">
-        </testcase>
-        <testcase classname="src/lib/utils.test.ts" name="cn &gt; deduplicates conflicting tailwind classes" time="0.000489125">
+        <testcase classname="src/components/Header.test.tsx" name="Header &gt; renders authenticated actions when user session exists" time="0.061558484">
         </testcase>
     </testsuite>
-    <testsuite name="src/pages/Auth.test.tsx" timestamp="2025-09-04T16:49:25.317Z" hostname="pkrvm7jw40e0xgp" tests="2" failures="0" errors="0" skipped="0" time="0.797308577">
-        <testcase classname="src/pages/Auth.test.tsx" name="Auth page &gt; allows login form input and calls supabase signInWithPassword on submit" time="0.429048988">
+    <testsuite name="src/lib/utils.test.ts" timestamp="2025-09-04T17:00:55.245Z" hostname="pkrvm7jw40e0xgp" tests="2" failures="0" errors="0" skipped="0" time="0.013408033">
+        <testcase classname="src/lib/utils.test.ts" name="cn &gt; merges class names and ignores falsy values" time="0.011190708">
         </testcase>
-        <testcase classname="src/pages/Auth.test.tsx" name="Auth page &gt; switches to signup tab and calls supabase signUp on submit" time="0.366321725">
-        </testcase>
-    </testsuite>
-    <testsuite name="src/pages/Index.test.tsx" timestamp="2025-09-04T16:49:25.317Z" hostname="pkrvm7jw40e0xgp" tests="1" failures="0" errors="0" skipped="0" time="0.21451456">
-        <testcase classname="src/pages/Index.test.tsx" name="Index page &gt; renders hero content" time="0.212274611">
+        <testcase classname="src/lib/utils.test.ts" name="cn &gt; deduplicates conflicting tailwind classes" time="0.000723813">
         </testcase>
     </testsuite>
-    <testsuite name="tests/unit/frontend/smoke.test.tsx" timestamp="2025-09-04T16:49:25.318Z" hostname="pkrvm7jw40e0xgp" tests="1" failures="0" errors="0" skipped="0" time="0.041726821">
-        <testcase classname="tests/unit/frontend/smoke.test.tsx" name="UI smoke &gt; renders landing content" time="0.04032015">
+    <testsuite name="src/pages/Auth.test.tsx" timestamp="2025-09-04T17:00:55.245Z" hostname="pkrvm7jw40e0xgp" tests="2" failures="0" errors="0" skipped="0" time="0.87432194">
+        <testcase classname="src/pages/Auth.test.tsx" name="Auth page &gt; allows login form input and calls supabase signInWithPassword on submit" time="0.457064502">
+        </testcase>
+        <testcase classname="src/pages/Auth.test.tsx" name="Auth page &gt; switches to signup tab and calls supabase signUp on submit" time="0.415255575">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/pages/Index.test.tsx" timestamp="2025-09-04T17:00:55.246Z" hostname="pkrvm7jw40e0xgp" tests="1" failures="0" errors="0" skipped="0" time="0.182600019">
+        <testcase classname="src/pages/Index.test.tsx" name="Index page &gt; renders hero content" time="0.181021618">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/optimization/EmailOptimizer.test.tsx" timestamp="2025-09-04T17:00:55.246Z" hostname="pkrvm7jw40e0xgp" tests="7" failures="0" errors="0" skipped="0" time="0.657837148">
+        <testcase classname="src/components/optimization/EmailOptimizer.test.tsx" name="EmailOptimizer with Scoring &gt; renders both optimize and score tabs" time="0.141938639">
+            <system-err>
+Error loading usage stats: TypeError: __vite_ssr_import_12__.supabase.from(...).select(...).eq(...).eq is not a function
+    at loadUsageStats [90m(/home/runner/work/subject-ai/subject-ai/[39msrc/components/optimization/EmailOptimizer.tsx:99:10[90m)[39m
+    at [90m/home/runner/work/subject-ai/subject-ai/[39msrc/components/optimization/EmailOptimizer.tsx:85:7
+    at commitHookEffectListMount [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:23189:26[90m)[39m
+    at commitPassiveMountOnFiber [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:24970:11[90m)[39m
+    at commitPassiveMountEffects_complete [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:24930:9[90m)[39m
+    at commitPassiveMountEffects_begin [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:24917:7[90m)[39m
+    at commitPassiveMountEffects [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:24905:3[90m)[39m
+    at flushPassiveEffectsImpl [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:27078:3[90m)[39m
+    at flushPassiveEffects [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:27023:14[90m)[39m
+    at performSyncWorkOnRoot [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:26115:3[90m)[39m
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/optimization/EmailOptimizer.test.tsx" name="EmailOptimizer with Scoring &gt; switches between optimize and score modes" time="0.060883665">
+            <system-err>
+Error loading usage stats: TypeError: __vite_ssr_import_12__.supabase.from(...).select(...).eq(...).eq is not a function
+    at loadUsageStats [90m(/home/runner/work/subject-ai/subject-ai/[39msrc/components/optimization/EmailOptimizer.tsx:99:10[90m)[39m
+    at [90m/home/runner/work/subject-ai/subject-ai/[39msrc/components/optimization/EmailOptimizer.tsx:85:7
+    at commitHookEffectListMount [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:23189:26[90m)[39m
+    at commitPassiveMountOnFiber [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:24970:11[90m)[39m
+    at commitPassiveMountEffects_complete [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:24930:9[90m)[39m
+    at commitPassiveMountEffects_begin [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:24917:7[90m)[39m
+    at commitPassiveMountEffects [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:24905:3[90m)[39m
+    at flushPassiveEffectsImpl [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:27078:3[90m)[39m
+    at flushPassiveEffects [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:27023:14[90m)[39m
+    at performSyncWorkOnRoot [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:26115:3[90m)[39m
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/optimization/EmailOptimizer.test.tsx" name="EmailOptimizer with Scoring &gt; calls score-subject function when scoring" time="0.108478198">
+            <system-err>
+Error loading usage stats: TypeError: __vite_ssr_import_12__.supabase.from(...).select(...).eq(...).eq is not a function
+    at loadUsageStats [90m(/home/runner/work/subject-ai/subject-ai/[39msrc/components/optimization/EmailOptimizer.tsx:99:10[90m)[39m
+    at [90m/home/runner/work/subject-ai/subject-ai/[39msrc/components/optimization/EmailOptimizer.tsx:85:7
+    at commitHookEffectListMount [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:23189:26[90m)[39m
+    at commitPassiveMountOnFiber [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:24970:11[90m)[39m
+    at commitPassiveMountEffects_complete [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:24930:9[90m)[39m
+    at commitPassiveMountEffects_begin [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:24917:7[90m)[39m
+    at commitPassiveMountEffects [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:24905:3[90m)[39m
+    at flushPassiveEffectsImpl [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:27078:3[90m)[39m
+    at flushPassiveEffects [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:27023:14[90m)[39m
+    at commitRootImpl [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:26974:5[90m)[39m
+
+Error loading usage stats: TypeError: __vite_ssr_import_12__.supabase.from(...).select(...).eq(...).eq is not a function
+    at loadUsageStats [90m(/home/runner/work/subject-ai/subject-ai/[39msrc/components/optimization/EmailOptimizer.tsx:99:10[90m)[39m
+    at handleScore [90m(/home/runner/work/subject-ai/subject-ai/[39msrc/components/optimization/EmailOptimizer.tsx:165:9[90m)[39m
+[90m    at processTicksAndRejections (node:internal/process/task_queues:95:5)[39m
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/optimization/EmailOptimizer.test.tsx" name="EmailOptimizer with Scoring &gt; displays score results correctly" time="0.128035598">
+            <system-err>
+Error loading usage stats: TypeError: __vite_ssr_import_12__.supabase.from(...).select(...).eq(...).eq is not a function
+    at loadUsageStats [90m(/home/runner/work/subject-ai/subject-ai/[39msrc/components/optimization/EmailOptimizer.tsx:99:10[90m)[39m
+    at [90m/home/runner/work/subject-ai/subject-ai/[39msrc/components/optimization/EmailOptimizer.tsx:85:7
+    at commitHookEffectListMount [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:23189:26[90m)[39m
+    at commitPassiveMountOnFiber [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:24970:11[90m)[39m
+    at commitPassiveMountEffects_complete [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:24930:9[90m)[39m
+    at commitPassiveMountEffects_begin [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:24917:7[90m)[39m
+    at commitPassiveMountEffects [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:24905:3[90m)[39m
+    at flushPassiveEffectsImpl [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:27078:3[90m)[39m
+    at flushPassiveEffects [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:27023:14[90m)[39m
+    at commitRootImpl [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:26974:5[90m)[39m
+
+Error loading usage stats: TypeError: __vite_ssr_import_12__.supabase.from(...).select(...).eq(...).eq is not a function
+    at loadUsageStats [90m(/home/runner/work/subject-ai/subject-ai/[39msrc/components/optimization/EmailOptimizer.tsx:99:10[90m)[39m
+    at handleScore [90m(/home/runner/work/subject-ai/subject-ai/[39msrc/components/optimization/EmailOptimizer.tsx:165:9[90m)[39m
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/optimization/EmailOptimizer.test.tsx" name="EmailOptimizer with Scoring &gt; handles scoring errors gracefully" time="0.107861405">
+            <system-err>
+Error loading usage stats: TypeError: __vite_ssr_import_12__.supabase.from(...).select(...).eq(...).eq is not a function
+    at loadUsageStats [90m(/home/runner/work/subject-ai/subject-ai/[39msrc/components/optimization/EmailOptimizer.tsx:99:10[90m)[39m
+    at [90m/home/runner/work/subject-ai/subject-ai/[39msrc/components/optimization/EmailOptimizer.tsx:85:7
+    at commitHookEffectListMount [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:23189:26[90m)[39m
+    at commitPassiveMountOnFiber [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:24970:11[90m)[39m
+    at commitPassiveMountEffects_complete [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:24930:9[90m)[39m
+    at commitPassiveMountEffects_begin [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:24917:7[90m)[39m
+    at commitPassiveMountEffects [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:24905:3[90m)[39m
+    at flushPassiveEffectsImpl [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:27078:3[90m)[39m
+    at flushPassiveEffects [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:27023:14[90m)[39m
+    at commitRootImpl [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:26974:5[90m)[39m
+
+Scoring error: Error: Failed to score
+    at [90m/home/runner/work/subject-ai/subject-ai/[39msrc/components/optimization/EmailOptimizer.test.tsx:168:14
+    at [90mfile:///home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:155:11
+    at [90mfile:///home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:26
+    at [90mfile:///home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1897:20
+    at new Promise (&lt;anonymous&gt;)
+    at runWithTimeout [90m(file:///home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1863:10[90m)[39m
+    at runTest [90m(file:///home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1574:12[90m)[39m
+    at runSuite [90m(file:///home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8[90m)[39m
+    at runSuite [90m(file:///home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1729:8[90m)[39m
+    at runFiles [90m(file:///home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:1787:3[90m)[39m
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/optimization/EmailOptimizer.test.tsx" name="EmailOptimizer with Scoring &gt; requires authentication for scoring" time="0.06475">
+        </testcase>
+        <testcase classname="src/components/optimization/EmailOptimizer.test.tsx" name="EmailOptimizer with Scoring &gt; clears both optimization and scoring results when clear is clicked" time="0.043686032">
+            <system-err>
+Error loading usage stats: TypeError: __vite_ssr_import_12__.supabase.from(...).select(...).eq(...).eq is not a function
+    at loadUsageStats [90m(/home/runner/work/subject-ai/subject-ai/[39msrc/components/optimization/EmailOptimizer.tsx:99:10[90m)[39m
+    at [90m/home/runner/work/subject-ai/subject-ai/[39msrc/components/optimization/EmailOptimizer.tsx:85:7
+    at commitHookEffectListMount [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:23189:26[90m)[39m
+    at commitPassiveMountOnFiber [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:24970:11[90m)[39m
+    at commitPassiveMountEffects_complete [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:24930:9[90m)[39m
+    at commitPassiveMountEffects_begin [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:24917:7[90m)[39m
+    at commitPassiveMountEffects [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:24905:3[90m)[39m
+    at flushPassiveEffectsImpl [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:27078:3[90m)[39m
+    at flushPassiveEffects [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:27023:14[90m)[39m
+    at commitRootImpl [90m(/home/runner/work/subject-ai/subject-ai/[39mnode_modules/[4mreact-dom[24m/cjs/react-dom.development.js:26974:5[90m)[39m
+
+            </system-err>
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/frontend/smoke.test.tsx" timestamp="2025-09-04T17:00:55.249Z" hostname="pkrvm7jw40e0xgp" tests="1" failures="0" errors="0" skipped="0" time="0.046872278">
+        <testcase classname="tests/unit/frontend/smoke.test.tsx" name="UI smoke &gt; renders landing content" time="0.044843005">
         </testcase>
     </testsuite>
 </testsuites>
