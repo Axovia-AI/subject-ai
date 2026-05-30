@@ -56,14 +56,18 @@ const Auth = () => {
         description: error.message,
         variant: "destructive",
       });
+      // Only reset loading state on error - on success, the component
+      // will navigate away and unmount, so we keep the loading state
+      // to prevent a flash of enabled button before navigation
+      setIsLoading(false);
     } else {
       toast({
         title: "Welcome back!",
         description: "You've been successfully logged in.",
       });
+      // Keep loading state active on success - navigation will happen
+      // via useEffect when user state changes
     }
-
-    setIsLoading(false);
   };
 
   // Handle signup

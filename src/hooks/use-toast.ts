@@ -128,6 +128,15 @@ export const reducer = (state: State, action: Action): State => {
 
 const listeners: Array<(state: State) => void> = []
 
+// Exported for testing purposes only
+export const _getListenersForTesting = () => listeners
+
+// Counter for effect runs (testing only)
+let _effectRunCount = 0
+export const _getEffectRunCount = () => _effectRunCount
+export const _resetEffectRunCount = () => { _effectRunCount = 0 }
+export const _incrementEffectRunCount = () => { _effectRunCount++ }
+
 let memoryState: State = { toasts: [] }
 
 function dispatch(action: Action) {
@@ -172,6 +181,7 @@ function useToast() {
   const [state, setState] = React.useState<State>(memoryState)
 
   React.useEffect(() => {
+    _incrementEffectRunCount()
     listeners.push(setState)
     return () => {
       const index = listeners.indexOf(setState)

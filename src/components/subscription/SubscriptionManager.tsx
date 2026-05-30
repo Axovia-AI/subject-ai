@@ -48,7 +48,8 @@ export const SubscriptionManager: React.FC<SubscriptionManagerProps> = ({ userId
     try {
       setActionLoading(true);
       const { data, error } = await supabase.functions.invoke('create-checkout', {
-        body: { planName: "SubjectAI Premium" }
+        // Use Starter plan from Pricing.tsx which is the entry-level paid plan at $19/mo
+        body: { planName: "Starter:monthly" }
       });
       
       if (error) throw error;

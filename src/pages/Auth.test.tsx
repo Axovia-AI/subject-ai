@@ -1,15 +1,17 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import Auth from './Auth'
 import { supabase } from '@/integrations/supabase/client'
 
+const mockNavigate = vi.fn()
+
 vi.mock('react-router-dom', async (orig) => {
   const actual = await orig()
   return {
     ...actual as any,
-    useNavigate: () => vi.fn(),
+    useNavigate: () => mockNavigate,
   }
 })
 
@@ -20,6 +22,7 @@ vi.mock('@/contexts/AuthContext', () => ({
 describe('Auth page', () => {
   beforeEach(() => {
     vi.restoreAllMocks()
+    mockNavigate.mockClear()
   })
 
   // BUG: Error state persists when switching between login and signup tabs
@@ -109,5 +112,43 @@ describe('Auth page', () => {
     expect(args.password).toBe('secret123')
     // options should include redirect and full_name when provided
     expect(args.options).toBeTruthy()
+  })
+
+  // BUG: Button should stay in loading state during successful login until navigation completes
+  // Currently, setIsLoading(false) is called even on success, causing the button to briefly
+  // appear enabled before navigation occurs
+  it('keeps button disabled after successful login until navigation', async () => {
+    vi.spyOn(supabase.auth, 'signInWithPassword').mockResolvedValue({
+      data: { user: { id: '123', email: 'test@example.com' }, session: {} },
+      error: null
+    } as any)
+
+    render(
+      <MemoryRouter>
+        <Auth />
+      </MemoryRouter>
+    )
+
+    const user = userEvent.setup()
+
+    // Fill in login form
+    const email = await screen.findByLabelText(/email/i)
+    const password = screen.getByLabelText(/password/i)
+    await user.type(email, 'test@example.com')
+    await user.type(password, 'password123')
+
+    const signInButton = screen.getByRole('button', { name: /sign in$/i })
+
+    // Submit the form
+    await user.click(signInButton)
+
+    // After successful login, the button should remain disabled (loading state)
+    // until the component navigates away. This prevents any flash of enabled state.
+    // The bug is that setIsLoading(false) is called unconditionally after login.
+    await waitFor(() => {
+      // The button should still be disabled after successful login
+      // because we're waiting for navigation to complete
+      expect(signInButton).toBeDisabled()
+    }, { timeout: 100 })
   })
 })

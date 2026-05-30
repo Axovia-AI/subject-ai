@@ -44,11 +44,14 @@ const useFormField = () => {
   const itemContext = React.useContext(FormItemContext)
   const { getFieldState, formState } = useFormContext()
 
-  const fieldState = getFieldState(fieldContext.name, formState)
-
-  if (!fieldContext) {
+  // Check if we're inside a FormField by verifying the context has a name property
+  // React.useContext returns the default value ({}) when used outside a provider,
+  // so we need to check for the presence of the 'name' property instead of truthiness
+  if (!fieldContext.name) {
     throw new Error("useFormField should be used within <FormField>")
   }
+
+  const fieldState = getFieldState(fieldContext.name, formState)
 
   const { id } = itemContext
 

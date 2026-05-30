@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
-import { useToast, toast, reducer } from './use-toast'
+import { useToast, toast, reducer, _getListenersForTesting, _getEffectRunCount, _resetEffectRunCount } from './use-toast'
 
 describe('useToast', () => {
   beforeEach(() => {
@@ -11,26 +11,95 @@ describe('useToast', () => {
     vi.useRealTimers()
   })
 
+  describe('Bug #3: useEffect dependency on [state] causes unnecessary effect re-runs', () => {
+    beforeEach(() => {
+      _resetEffectRunCount()
+    })
+
+    it('should only run effect once on mount, not on every state change', () => {
+      // BUG: useEffect depends on [state] instead of []
+      // This causes the effect to re-run on every state change
+      // Expected: effect runs 1 time (on mount only)
+      // Actual with bug: effect runs 1 + N times (N = number of state changes)
+
+      const { result, unmount } = renderHook(() => useToast())
+
+      // Effect should have run once on mount
+      const afterMount = _getEffectRunCount()
+      expect(afterMount).toBe(1)
+
+      // Add a toast - triggers state change
+      act(() => {
+        toast({ title: 'Toast 1' })
+      })
+
+      // With correct [] dependency: effect count stays at 1
+      // With buggy [state] dependency: effect count increases to 2
+      const afterFirstToast = _getEffectRunCount()
+
+      // THIS ASSERTION WILL FAIL WITH THE BUG - proving the bug exists
+      expect(afterFirstToast).toBe(1) // Should still be 1, not 2
+
+      // Add another toast
+      act(() => {
+        toast({ title: 'Toast 2' })
+      })
+
+      // With correct dependency: still 1
+      // With buggy dependency: now 3
+      const afterSecondToast = _getEffectRunCount()
+      expect(afterSecondToast).toBe(1) // Should still be 1, not 3
+
+      unmount()
+    })
+
+    it('should only register listener once per hook instance regardless of state changes', () => {
+      const { result, unmount } = renderHook(() => useToast())
+
+      // Get initial listener count
+      const initialListenerCount = _getListenersForTesting().length
+
+      // Add a toast - this triggers state change
+      act(() => {
+        toast({ title: 'Toast 1' })
+      })
+
+      // After state change, listener count should remain the same
+      const afterFirstToast = _getListenersForTesting().length
+      expect(afterFirstToast).toBe(initialListenerCount)
+
+      // Add another toast
+      act(() => {
+        toast({ title: 'Toast 2' })
+      })
+
+      // Listener count should still be the same
+      const afterSecondToast = _getListenersForTesting().length
+      expect(afterSecondToast).toBe(initialListenerCount)
+
+      unmount()
+
+      // After unmount, our listener should be removed
+      const afterUnmount = _getListenersForTesting().length
+      expect(afterUnmount).toBe(initialListenerCount - 1)
+    })
+  })
+
   describe('Bug #1: Incorrect useEffect dependency causing unnecessary effect re-runs', () => {
     it('should not re-run effect when state changes (effect should only run on mount)', () => {
       // Track effect runs via a spy on the listener behavior
       // The bug: useEffect depends on [state] instead of []
       // This causes the effect to re-run on every state change
 
-      let effectRunCount = 0
-      let cleanupRunCount = 0
-
-      // We can detect effect re-runs by observing behavior
-      // With [state] dependency: effect runs N+1 times for N state changes
-      // With [] dependency: effect runs exactly once
-
       const { result, unmount } = renderHook(() => {
         const hookResult = useToast()
         return hookResult
       })
 
-      // Initial render - effect runs once
-      expect(result.current.toasts).toHaveLength(0)
+      // Clear any residual toasts from previous tests
+      act(() => {
+        result.current.dismiss()
+      })
 
       // Add toast 1 - triggers state change
       act(() => {
@@ -96,10 +165,8 @@ describe('useToast', () => {
       unmount()
 
       // Add toast after unmount - unmounted hook should not receive it
-      let postUnmountToastId: string | null = null
       act(() => {
-        const { id } = toast({ title: 'Post Unmount' })
-        postUnmountToastId = id
+        toast({ title: 'Post Unmount' })
       })
 
       // If cleanup failed, this could cause issues (though not easily testable)
