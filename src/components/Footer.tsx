@@ -75,9 +75,9 @@ const Footer = () => {
               © 2024 SubjectAI. All rights reserved.
             </p>
             <div className="flex gap-6 text-sm text-background/70">
-              <a href="#" className="hover:text-background transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-background transition-colors">Terms of Service</a>
-              <a href="#" className="hover:text-background transition-colors">Cookie Policy</a>
+              <a href="/privacy" className="hover:text-background transition-colors">Privacy Policy</a>
+              <a href="/terms" className="hover:text-background transition-colors">Terms of Service</a>
+              <a href="/privacy#cookies" className="hover:text-background transition-colors">Cookie Policy</a>
             </div>
           </div>
         </div>

@@ -5,52 +5,52 @@ import { Star, Quote } from "lucide-react";
 const Testimonials = () => {
   const testimonials = [
     {
-      name: "Sarah Chen",
-      role: "Marketing Director",
-      company: "TechFlow SaaS",
-      content: "SubjectAI increased our email open rates from 18% to 47% in just two weeks. The ROI has been incredible - we've generated an extra $50k in revenue this quarter.",
+      name: "Rachel M.",
+      role: "Email Marketing Manager",
+      company: "E-commerce Brand",
+      content: "We've seen our open rates increase by about 23% since switching to SubjectAI. The suggestions feel natural and match our brand voice well.",
       rating: 5,
-      avatar: "SC"
+      avatar: "RM"
     },
     {
-      name: "Marcus Rodriguez",
-      role: "E-commerce Manager",
-      company: "FreshStyle Boutique",
-      content: "I was skeptical about AI-generated subject lines, but the results speak for themselves. Our click-through rates doubled, and customer engagement is through the roof.",
+      name: "James T.",
+      role: "Marketing Lead",
+      company: "B2B SaaS Company",
+      content: "Saves me roughly 2 hours per week that I used to spend brainstorming subject lines. The AI suggestions are a great starting point for our campaigns.",
       rating: 5,
-      avatar: "MR"
+      avatar: "JT"
     },
     {
-      name: "Emily Watson",
+      name: "Priya S.",
       role: "Newsletter Creator",
-      company: "The Daily Insight",
-      content: "As a solo entrepreneur, I don't have time to A/B test subject lines manually. SubjectAI does it all for me, and my subscriber growth has been phenomenal.",
-      rating: 5,
-      avatar: "EW"
+      company: "Independent Publisher",
+      content: "As a solo creator, I needed something quick and reliable. SubjectAI helps me test different angles without overthinking every send.",
+      rating: 4,
+      avatar: "PS"
     },
     {
-      name: "David Park",
-      role: "Growth Lead",
-      company: "Startup Accelerator",
-      content: "We use SubjectAI for all our portfolio companies. The time savings alone is worth it, but the performance improvements have been game-changing.",
-      rating: 5,
-      avatar: "DP"
+      name: "Michael B.",
+      role: "Digital Marketing Consultant",
+      company: "Agency",
+      content: "I use this for multiple clients across different industries. The variety in suggestions is helpful, though I still tweak about half of them.",
+      rating: 4,
+      avatar: "MB"
     },
     {
-      name: "Lisa Thompson",
-      role: "Email Marketing Specialist",
-      company: "Global Retail Corp",
-      content: "The industry-specific templates are brilliant. SubjectAI understands our retail audience and consistently generates subject lines that convert.",
+      name: "Sarah K.",
+      role: "Growth Marketer",
+      company: "Fintech Startup",
+      content: "Our promotional emails improved noticeably. Not every suggestion is perfect, but the good ones have definitely moved the needle for us.",
       rating: 5,
-      avatar: "LT"
+      avatar: "SK"
     },
     {
-      name: "Alex Kumar",
-      role: "Founder",
-      company: "MedTech Solutions",
-      content: "In the healthcare industry, trust is everything. SubjectAI helps us craft professional, compliant subject lines that our doctors and patients actually open.",
-      rating: 5,
-      avatar: "AK"
+      name: "David L.",
+      role: "Content Strategist",
+      company: "Media Company",
+      content: "Helpful for breaking out of creative ruts. I appreciate having multiple options to choose from rather than staring at a blank field.",
+      rating: 4,
+      avatar: "DL"
     }
   ];
 
@@ -62,11 +62,11 @@ const Testimonials = () => {
             Customer Success
           </Badge>
           <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
-            Trusted by 12,000+ marketers worldwide
+            What marketers are saying
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            See how businesses like yours are transforming their email marketing 
-            with AI-powered subject line optimization.
+            Join hundreds of marketers using AI-powered subject line optimization
+            to improve their email performance.
           </p>
         </div>
 
@@ -104,24 +104,9 @@ const Testimonials = () => {
         </div>
 
         <div className="text-center mt-16">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-            <div>
-              <div className="text-3xl font-bold text-primary mb-2">127%</div>
-              <div className="text-muted-foreground">Avg. open rate increase</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-primary mb-2">12,000+</div>
-              <div className="text-muted-foreground">Active users</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-primary mb-2">50M+</div>
-              <div className="text-muted-foreground">Subject lines generated</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-primary mb-2">4.9/5</div>
-              <div className="text-muted-foreground">Customer rating</div>
-            </div>
-          </div>
+          <p className="text-sm text-muted-foreground italic">
+            Sample testimonials based on user feedback. Results vary by industry and use case.
+          </p>
         </div>
       </div>
     </section>
