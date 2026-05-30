@@ -1,29 +1,170 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="8" failures="0" errors="0" time="0.633358251">
-    <testsuite name="src/components/Header.test.tsx" timestamp="2025-08-13T13:55:46.493Z" hostname="Stephens-MacBook-Air.local" tests="2" failures="0" errors="0" skipped="0" time="0.14811925">
-        <testcase classname="src/components/Header.test.tsx" name="Header &gt; renders unauthenticated actions when no user session" time="0.114705959">
+<testsuites name="vitest tests" tests="50" failures="0" errors="0" time="3.635526814">
+    <testsuite name="src/components/FAQ.test.tsx" timestamp="2026-05-30T05:01:41.513Z" hostname="vm" tests="7" failures="0" errors="0" skipped="0" time="0.580475473">
+        <testcase classname="src/components/FAQ.test.tsx" name="FAQ &gt; renders all FAQ items" time="0.173400028">
         </testcase>
-        <testcase classname="src/components/Header.test.tsx" name="Header &gt; renders authenticated actions when user session exists" time="0.031892708">
+        <testcase classname="src/components/FAQ.test.tsx" name="FAQ &gt; renders section heading" time="0.105264587">
         </testcase>
-    </testsuite>
-    <testsuite name="src/pages/Auth.test.tsx" timestamp="2025-08-13T13:55:46.493Z" hostname="Stephens-MacBook-Air.local" tests="2" failures="0" errors="0" skipped="0" time="0.335803375">
-        <testcase classname="src/pages/Auth.test.tsx" name="Auth page &gt; allows login form input and calls supabase signInWithPassword on submit" time="0.216463458">
+        <testcase classname="src/components/FAQ.test.tsx" name="FAQ &gt; accordion expands on click" time="0.06765782">
         </testcase>
-        <testcase classname="src/pages/Auth.test.tsx" name="Auth page &gt; switches to signup tab and calls supabase signUp on submit" time="0.118705041">
+        <testcase classname="src/components/FAQ.test.tsx" name="FAQ &gt; accordion collapses when clicking an expanded item" time="0.070199793">
         </testcase>
-    </testsuite>
-    <testsuite name="src/pages/Index.test.tsx" timestamp="2025-08-13T13:55:46.493Z" hostname="Stephens-MacBook-Air.local" tests="1" failures="0" errors="0" skipped="0" time="0.096459542">
-        <testcase classname="src/pages/Index.test.tsx" name="Index page &gt; renders hero content" time="0.094974209">
+        <testcase classname="src/components/FAQ.test.tsx" name="FAQ &gt; supports keyboard navigation" time="0.075642576">
         </testcase>
-    </testsuite>
-    <testsuite name="src/lib/utils.test.ts" timestamp="2025-08-13T13:55:46.493Z" hostname="Stephens-MacBook-Air.local" tests="2" failures="0" errors="0" skipped="0" time="0.015170792">
-        <testcase classname="src/lib/utils.test.ts" name="cn &gt; merges class names and ignores falsy values" time="0.013424291">
+        <testcase classname="src/components/FAQ.test.tsx" name="FAQ &gt; has accessible ARIA attributes" time="0.048627212">
         </testcase>
-        <testcase classname="src/lib/utils.test.ts" name="cn &gt; deduplicates conflicting tailwind classes" time="0.000683375">
+        <testcase classname="src/components/FAQ.test.tsx" name="FAQ &gt; allows navigating between items with arrow keys" time="0.037326431">
         </testcase>
     </testsuite>
-    <testsuite name="tests/unit/frontend/smoke.test.tsx" timestamp="2025-08-13T13:55:46.494Z" hostname="Stephens-MacBook-Air.local" tests="1" failures="0" errors="0" skipped="0" time="0.037805292">
-        <testcase classname="tests/unit/frontend/smoke.test.tsx" name="UI smoke &gt; renders landing content" time="0.036434541">
+    <testsuite name="src/components/Footer.test.tsx" timestamp="2026-05-30T05:01:41.516Z" hostname="vm" tests="3" failures="0" errors="0" skipped="0" time="0.206292583">
+        <testcase classname="src/components/Footer.test.tsx" name="Footer &gt; renders Privacy Policy link pointing to /privacy" time="0.156579535">
+            <system-err>
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/Footer.test.tsx" name="Footer &gt; renders Terms of Service link pointing to /terms" time="0.024165688">
+        </testcase>
+        <testcase classname="src/components/Footer.test.tsx" name="Footer &gt; renders Cookie Policy link pointing to /privacy#cookies" time="0.023633381">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/Header.test.tsx" timestamp="2026-05-30T05:01:41.518Z" hostname="vm" tests="2" failures="0" errors="0" skipped="0" time="0.217527935">
+        <testcase classname="src/components/Header.test.tsx" name="Header &gt; renders unauthenticated actions when no user session" time="0.124451702">
+            <system-err>
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/Header.test.tsx" name="Header &gt; renders authenticated actions when user session exists" time="0.091019498">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/lib/utils.test.ts" timestamp="2026-05-30T05:01:41.519Z" hostname="vm" tests="2" failures="0" errors="0" skipped="0" time="0.008756176">
+        <testcase classname="src/lib/utils.test.ts" name="cn &gt; merges class names and ignores falsy values" time="0.006649811">
+        </testcase>
+        <testcase classname="src/lib/utils.test.ts" name="cn &gt; deduplicates conflicting tailwind classes" time="0.000778137">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/pages/Auth.test.tsx" timestamp="2026-05-30T05:01:41.520Z" hostname="vm" tests="2" failures="0" errors="0" skipped="0" time="0.854774541">
+        <testcase classname="src/pages/Auth.test.tsx" name="Auth page &gt; allows login form input and calls supabase signInWithPassword on submit" time="0.46735742">
+            <system-err>
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/pages/Auth.test.tsx" name="Auth page &gt; switches to signup tab and calls supabase signUp on submit" time="0.384958713">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/pages/Index.test.tsx" timestamp="2026-05-30T05:01:41.521Z" hostname="vm" tests="1" failures="0" errors="0" skipped="0" time="0.29019476">
+        <testcase classname="src/pages/Index.test.tsx" name="Index page &gt; renders hero content" time="0.288478781">
+            <system-err>
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+            </system-err>
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/onboarding/OnboardingChecklist.test.tsx" timestamp="2026-05-30T05:01:41.522Z" hostname="vm" tests="13" failures="0" errors="0" skipped="0" time="0.350262989">
+        <testcase classname="src/components/onboarding/OnboardingChecklist.test.tsx" name="OnboardingChecklist &gt; renders all checklist items" time="0.065509099">
+            <system-err>
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/components/onboarding/OnboardingChecklist.test.tsx" name="OnboardingChecklist &gt; renders the checklist title" time="0.024402048">
+        </testcase>
+        <testcase classname="src/components/onboarding/OnboardingChecklist.test.tsx" name="OnboardingChecklist &gt; shows progress text" time="0.012546344">
+        </testcase>
+        <testcase classname="src/components/onboarding/OnboardingChecklist.test.tsx" name="OnboardingChecklist &gt; shows progress bar" time="0.058169537">
+        </testcase>
+        <testcase classname="src/components/onboarding/OnboardingChecklist.test.tsx" name="OnboardingChecklist &gt; marks items as complete based on completedSteps prop" time="0.014065826">
+        </testcase>
+        <testcase classname="src/components/onboarding/OnboardingChecklist.test.tsx" name="OnboardingChecklist &gt; can be dismissed" time="0.051343992">
+        </testcase>
+        <testcase classname="src/components/onboarding/OnboardingChecklist.test.tsx" name="OnboardingChecklist &gt; saves dismissed state to localStorage" time="0.031334193">
+        </testcase>
+        <testcase classname="src/components/onboarding/OnboardingChecklist.test.tsx" name="OnboardingChecklist &gt; does not render if already dismissed (from localStorage)" time="0.001990167">
+        </testcase>
+        <testcase classname="src/components/onboarding/OnboardingChecklist.test.tsx" name="OnboardingChecklist &gt; links to relevant actions" time="0.034938387">
+        </testcase>
+        <testcase classname="src/components/onboarding/OnboardingChecklist.test.tsx" name="OnboardingChecklist &gt; shows &quot;Coming soon&quot; badge for email platform connection" time="0.008857653">
+        </testcase>
+        <testcase classname="src/components/onboarding/OnboardingChecklist.test.tsx" name="OnboardingChecklist &gt; calls onStepClick callback when a step is clicked" time="0.028027974">
+        </testcase>
+        <testcase classname="src/components/onboarding/OnboardingChecklist.test.tsx" name="OnboardingChecklist &gt; renders checkmark icon for completed items" time="0.008942457">
+        </testcase>
+        <testcase classname="src/components/onboarding/OnboardingChecklist.test.tsx" name="OnboardingChecklist &gt; shows all steps complete message when finished" time="0.00787552">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/frontend/PrivacyPolicy.test.tsx" timestamp="2026-05-30T05:01:41.526Z" hostname="vm" tests="8" failures="0" errors="0" skipped="0" time="0.473047991">
+        <testcase classname="tests/unit/frontend/PrivacyPolicy.test.tsx" name="PrivacyPolicy page &gt; renders the privacy policy heading" time="0.176362298">
+            <system-err>
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+            </system-err>
+        </testcase>
+        <testcase classname="tests/unit/frontend/PrivacyPolicy.test.tsx" name="PrivacyPolicy page &gt; renders data collection section" time="0.054615576">
+        </testcase>
+        <testcase classname="tests/unit/frontend/PrivacyPolicy.test.tsx" name="PrivacyPolicy page &gt; renders data usage section" time="0.035097385">
+        </testcase>
+        <testcase classname="tests/unit/frontend/PrivacyPolicy.test.tsx" name="PrivacyPolicy page &gt; renders third party services section with OpenAI, Stripe, and Supabase" time="0.048969501">
+        </testcase>
+        <testcase classname="tests/unit/frontend/PrivacyPolicy.test.tsx" name="PrivacyPolicy page &gt; renders cookies section" time="0.039934561">
+        </testcase>
+        <testcase classname="tests/unit/frontend/PrivacyPolicy.test.tsx" name="PrivacyPolicy page &gt; renders GDPR rights section" time="0.033744688">
+        </testcase>
+        <testcase classname="tests/unit/frontend/PrivacyPolicy.test.tsx" name="PrivacyPolicy page &gt; renders contact information" time="0.06109058">
+        </testcase>
+        <testcase classname="tests/unit/frontend/PrivacyPolicy.test.tsx" name="PrivacyPolicy page &gt; renders Axovia AI company name" time="0.02096144">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/frontend/TermsOfService.test.tsx" timestamp="2026-05-30T05:01:41.528Z" hostname="vm" tests="9" failures="0" errors="0" skipped="0" time="0.392128178">
+        <testcase classname="tests/unit/frontend/TermsOfService.test.tsx" name="TermsOfService page &gt; renders the terms of service heading" time="0.169598544">
+            <system-err>
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+            </system-err>
+        </testcase>
+        <testcase classname="tests/unit/frontend/TermsOfService.test.tsx" name="TermsOfService page &gt; renders service description section" time="0.027689368">
+        </testcase>
+        <testcase classname="tests/unit/frontend/TermsOfService.test.tsx" name="TermsOfService page &gt; renders user obligations section" time="0.020662846">
+        </testcase>
+        <testcase classname="tests/unit/frontend/TermsOfService.test.tsx" name="TermsOfService page &gt; renders payment terms section" time="0.031377743">
+        </testcase>
+        <testcase classname="tests/unit/frontend/TermsOfService.test.tsx" name="TermsOfService page &gt; renders limitation of liability section" time="0.029656307">
+        </testcase>
+        <testcase classname="tests/unit/frontend/TermsOfService.test.tsx" name="TermsOfService page &gt; renders termination section" time="0.035279077">
+        </testcase>
+        <testcase classname="tests/unit/frontend/TermsOfService.test.tsx" name="TermsOfService page &gt; renders governing law section" time="0.028501688">
+        </testcase>
+        <testcase classname="tests/unit/frontend/TermsOfService.test.tsx" name="TermsOfService page &gt; renders Axovia AI company name" time="0.025445807">
+        </testcase>
+        <testcase classname="tests/unit/frontend/TermsOfService.test.tsx" name="TermsOfService page &gt; renders contact information" time="0.02175577">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/frontend/routes.test.tsx" timestamp="2026-05-30T05:01:41.530Z" hostname="vm" tests="2" failures="0" errors="0" skipped="0" time="0.207759997">
+        <testcase classname="tests/unit/frontend/routes.test.tsx" name="Legal page routes &gt; navigates to /privacy and renders PrivacyPolicy component" time="0.167002632">
+            <system-err>
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+            </system-err>
+        </testcase>
+        <testcase classname="tests/unit/frontend/routes.test.tsx" name="Legal page routes &gt; navigates to /terms and renders TermsOfService component" time="0.038863345">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/unit/frontend/smoke.test.tsx" timestamp="2026-05-30T05:01:41.531Z" hostname="vm" tests="1" failures="0" errors="0" skipped="0" time="0.054306191">
+        <testcase classname="tests/unit/frontend/smoke.test.tsx" name="UI smoke &gt; renders landing content" time="0.052539172">
+            <system-err>
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+            </system-err>
         </testcase>
     </testsuite>
 </testsuites>
