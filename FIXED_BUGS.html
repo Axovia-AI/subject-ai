@@ -33,5 +33,21 @@
     <p><strong>Fix:</strong> Changed validation to explicitly check for <code>null</code>, <code>undefined</code>, and exactly <code>0</code> (which is ambiguous), while allowing negative timestamps to be converted correctly.</p>
   </div>
 
+  <div class="bug">
+    <h3>Bug #3: Open Redirect vulnerability in customer-portal buildReturnUrl</h3>
+    <p><strong>Location:</strong> supabase/functions/customer-portal/logic.ts:9</p>
+    <p><strong>Description:</strong> The <code>buildReturnUrl</code> function accepted any URL matching <code>^https?://</code> regex, including malicious external URLs like <code>http://evil.com</code>. An attacker who could control the Origin header could redirect users to a phishing site after they complete billing portal actions. This is a classic Open Redirect vulnerability (OWASP A01:2021).</p>
+    <p><strong>Test:</strong> supabase/functions/customer-portal/logic_test.ts - "buildReturnUrl rejects non-localhost external origins to prevent open redirect"</p>
+    <p><strong>Fix:</strong> Added an allowlist of trusted origin patterns (localhost, 127.0.0.1, subjectai.com, subject-ai*.vercel.app) and only use origins that match. Unknown origins fallback to localhost:3000.</p>
+  </div>
+
+  <div class="bug">
+    <h3>Bug #4: Unhandled JSON parsing exception in optimize-subject</h3>
+    <p><strong>Location:</strong> supabase/functions/optimize-subject/index.ts:25</p>
+    <p><strong>Description:</strong> The <code>req.json()</code> call was not wrapped in try/catch, meaning malformed JSON in the request body would throw an unhandled exception and crash the function with an unhelpful error. Compare to create-checkout which uses <code>.catch()</code> for graceful handling.</p>
+    <p><strong>Test:</strong> supabase/functions/optimize-subject/logic_test.ts - "parseRequestBody returns default values for malformed JSON"</p>
+    <p><strong>Fix:</strong> Added <code>parseRequestBody()</code> helper function that safely parses JSON and returns defaults on failure. Updated index.ts to use <code>req.text()</code> + <code>parseRequestBody()</code> for graceful handling.</p>
+  </div>
+
 </body>
 </html>

@@ -1,9 +1,9 @@
 import { assertEquals } from "https://deno.land/std@0.224.0/assert/mod.ts";
 import { buildReturnUrl } from "./logic.ts";
 
-Deno.test("buildReturnUrl uses origin when valid and joins path once", () => {
-  const url = buildReturnUrl("https://example.com", "/dashboard");
-  assertEquals(url, "https://example.com/dashboard");
+Deno.test("buildReturnUrl uses origin when valid and in allowlist", () => {
+  const url = buildReturnUrl("https://subjectai.com", "/dashboard");
+  assertEquals(url, "https://subjectai.com/dashboard");
 });
 
 Deno.test("buildReturnUrl falls back to localhost when origin missing", () => {
@@ -12,8 +12,8 @@ Deno.test("buildReturnUrl falls back to localhost when origin missing", () => {
 });
 
 Deno.test("buildReturnUrl normalizes extra slash", () => {
-  const url = buildReturnUrl("https://example.com/", "dashboard");
-  assertEquals(url, "https://example.com/dashboard");
+  const url = buildReturnUrl("https://subjectai.com/", "dashboard");
+  assertEquals(url, "https://subjectai.com/dashboard");
 });
 
 Deno.test("buildReturnUrl rejects non-localhost external origins to prevent open redirect", () => {

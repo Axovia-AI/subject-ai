@@ -1,7 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.50.5';
-import { buildPrompt, parseOptimizedSubjects } from './logic.ts';
+import { buildPrompt, parseOptimizedSubjects, parseRequestBody } from './logic.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -21,9 +21,11 @@ serve(async (req) => {
 
   try {
     console.log('Optimize subject function called');
-    
-    const { originalSubject, emailContext, tone = 'professional' } = await req.json();
-    
+
+    // Safely parse request body to handle malformed JSON gracefully
+    const bodyText = await req.text();
+    const { originalSubject, emailContext, tone } = parseRequestBody(bodyText);
+
     if (!originalSubject) {
       throw new Error('Original subject is required');
     }

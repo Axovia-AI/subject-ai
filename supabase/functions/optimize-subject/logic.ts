@@ -3,6 +3,34 @@
  * Keeps HTTP/Supabase/OpenAI I/O out of core logic for easier testing.
  */
 
+export interface OptimizeSubjectRequest {
+  originalSubject: string;
+  emailContext?: string;
+  tone: string;
+}
+
+/**
+ * Safely parse the request body JSON, returning defaults if parsing fails.
+ * This prevents unhandled exceptions when malformed JSON is sent.
+ */
+export function parseRequestBody(bodyText: string): OptimizeSubjectRequest {
+  try {
+    const parsed = JSON.parse(bodyText);
+    return {
+      originalSubject: parsed.originalSubject ?? "",
+      emailContext: parsed.emailContext,
+      tone: parsed.tone ?? "professional",
+    };
+  } catch (_err) {
+    // Return safe defaults for malformed JSON
+    return {
+      originalSubject: "",
+      emailContext: undefined,
+      tone: "professional",
+    };
+  }
+}
+
 /** Build the system/user prompt for the LLM. */
 export function buildPrompt(originalSubject: string, emailContext?: string, tone: string = 'professional'): string {
   if (!originalSubject || typeof originalSubject !== 'string' || !originalSubject.trim()) {

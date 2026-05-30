@@ -1,5 +1,5 @@
 import { assert, assertEquals, assertThrows } from "https://deno.land/std@0.224.0/assert/mod.ts";
-import { buildPrompt, parseOptimizedSubjects } from "./logic.ts";
+import { buildPrompt, parseOptimizedSubjects, parseRequestBody } from "./logic.ts";
 
 Deno.test("buildPrompt throws when originalSubject is missing", () => {
   assertThrows(() => buildPrompt("") , Error, "Original subject is required");
@@ -49,4 +49,24 @@ Deno.test("parseOptimizedSubjects rejects empty array", () => {
 
 Deno.test("parseOptimizedSubjects rejects arrays with non-string items", () => {
   assertThrows(() => parseOptimizedSubjects('["ok", 2]'), Error, "Every subject line must be a non-empty string");
+});
+
+Deno.test("parseRequestBody returns default values for malformed JSON", () => {
+  const result = parseRequestBody("not valid json");
+  assertEquals(result.originalSubject, "");
+  assertEquals(result.emailContext, undefined);
+  assertEquals(result.tone, "professional");
+});
+
+Deno.test("parseRequestBody extracts values from valid JSON", () => {
+  const result = parseRequestBody('{"originalSubject": "Hello", "emailContext": "context", "tone": "friendly"}');
+  assertEquals(result.originalSubject, "Hello");
+  assertEquals(result.emailContext, "context");
+  assertEquals(result.tone, "friendly");
+});
+
+Deno.test("parseRequestBody uses default tone when not provided", () => {
+  const result = parseRequestBody('{"originalSubject": "Test"}');
+  assertEquals(result.originalSubject, "Test");
+  assertEquals(result.tone, "professional");
 });
