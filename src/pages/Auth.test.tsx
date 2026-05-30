@@ -22,6 +22,39 @@ describe('Auth page', () => {
     vi.restoreAllMocks()
   })
 
+  // BUG: Error state persists when switching between login and signup tabs
+  it('clears error state when switching between tabs', async () => {
+    // Mock login failure
+    vi.spyOn(supabase.auth, 'signInWithPassword').mockResolvedValue({
+      data: { user: null, session: null },
+      error: { message: 'Invalid credentials', name: 'AuthApiError', status: 400 }
+    } as any)
+
+    render(
+      <MemoryRouter>
+        <Auth />
+      </MemoryRouter>
+    )
+
+    const user = userEvent.setup()
+
+    // Fill in login form with invalid credentials and submit
+    const email = await screen.findByLabelText(/email/i)
+    const password = screen.getByLabelText(/password/i)
+    await user.type(email, 'invalid@example.com')
+    await user.type(password, 'wrongpassword')
+    await user.click(screen.getByRole('button', { name: /sign in$/i }))
+
+    // Wait for error to appear
+    await screen.findByText('Invalid credentials')
+
+    // Switch to signup tab
+    await user.click(screen.getByRole('tab', { name: /sign up/i }))
+
+    // Error should be cleared when switching tabs
+    expect(screen.queryByText('Invalid credentials')).not.toBeInTheDocument()
+  })
+
   it('allows login form input and calls supabase signInWithPassword on submit', async () => {
     const signInMock = vi.spyOn(supabase.auth, 'signInWithPassword').mockResolvedValue({ data: {}, error: null } as any)
 

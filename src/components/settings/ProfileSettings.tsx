@@ -17,10 +17,10 @@ interface ProfileSettingsProps {
   isLoading: boolean;
 }
 
-export const ProfileSettings: React.FC<ProfileSettingsProps> = ({ 
-  profile, 
-  onUpdate, 
-  isLoading 
+export const ProfileSettings: React.FC<ProfileSettingsProps> = ({
+  profile,
+  onUpdate,
+  isLoading
 }) => {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
@@ -28,6 +28,16 @@ export const ProfileSettings: React.FC<ProfileSettingsProps> = ({
     email: profile?.email || '',
   });
   const [isSaving, setIsSaving] = useState(false);
+
+  // Sync form data when profile prop changes (e.g., after async load)
+  React.useEffect(() => {
+    if (profile) {
+      setFormData({
+        full_name: profile.full_name || '',
+        email: profile.email || '',
+      });
+    }
+  }, [profile]);
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {

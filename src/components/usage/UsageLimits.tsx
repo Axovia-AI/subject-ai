@@ -22,9 +22,18 @@ interface UsageLimitsProps {
 }
 
 // Map subscription status to plan type for usage calculations
-const getEffectivePlan = (subscriptionData: any) => {
+// Maps subscription tiers to PLANS keys: 'free', 'pro', 'enterprise'
+const getEffectivePlan = (subscriptionData: any): string => {
   if (!subscriptionData?.subscribed) return 'free';
-  return subscriptionData.subscription_tier?.toLowerCase() || 'premium';
+
+  const tier = subscriptionData.subscription_tier?.toLowerCase();
+  // Map common tier names to PLANS keys
+  if (!tier) return 'pro'; // Default for subscribed users with no specific tier
+  if (tier === 'professional' || tier === 'pro' || tier === 'premium') return 'pro';
+  if (tier === 'enterprise' || tier === 'unlimited') return 'enterprise';
+  if (tier === 'starter' || tier === 'basic') return 'pro'; // Starter maps to pro for simplicity
+
+  return 'pro'; // Fallback for any unknown tier
 };
 
 interface PlanLimits {
