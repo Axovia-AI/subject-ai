@@ -5,7 +5,7 @@
 
 /** Build the system/user prompt for the LLM. */
 export function buildPrompt(originalSubject: string, emailContext?: string, tone: string = 'professional'): string {
-  if (!originalSubject || typeof originalSubject !== 'string') {
+  if (!originalSubject || typeof originalSubject !== 'string' || !originalSubject.trim()) {
     throw new Error('Original subject is required')
   }
 

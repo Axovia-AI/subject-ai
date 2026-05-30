@@ -47,3 +47,10 @@ Deno.test("toIsoFromUnixSeconds handles null/invalid and converts properly", () 
   const back = Math.floor(new Date(iso).getTime() / 1000);
   assertEquals(back, ts);
 });
+
+Deno.test("toIsoFromUnixSeconds handles negative timestamps (pre-1970 dates)", () => {
+  // -86400 is 1969-12-31 00:00:00 UTC
+  const iso = toIsoFromUnixSeconds(-86400);
+  // Negative timestamps are valid dates before Unix epoch
+  assertEquals(iso, "1969-12-31T00:00:00.000Z");
+});

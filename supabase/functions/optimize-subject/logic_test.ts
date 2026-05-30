@@ -5,6 +5,11 @@ Deno.test("buildPrompt throws when originalSubject is missing", () => {
   assertThrows(() => buildPrompt("") , Error, "Original subject is required");
 });
 
+Deno.test("buildPrompt throws when originalSubject is whitespace-only", () => {
+  assertThrows(() => buildPrompt("   "), Error, "Original subject is required");
+  assertThrows(() => buildPrompt("\t\n"), Error, "Original subject is required");
+});
+
 Deno.test("buildPrompt includes original subject, context, and tone", () => {
   const p = buildPrompt("Hello", "Context here", "friendly");
   assert(p.includes('Original subject: "Hello"'));

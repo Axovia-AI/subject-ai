@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fixed Bugs - Subject AI</title>
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+    .bug { border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 16px; background: #f9f9f9; }
+    .bug h3 { margin-top: 0; color: #c41e3a; }
+    .bug p { margin: 8px 0; }
+    .bug strong { color: #333; }
+    code { background: #eee; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
+  </style>
+</head>
+<body>
+  <h1>Fixed Bugs</h1>
+
+  <div class="bug">
+    <h3>Bug #1: Whitespace-only subject lines accepted as valid input</h3>
+    <p><strong>Location:</strong> supabase/functions/optimize-subject/logic.ts:8</p>
+    <p><strong>Description:</strong> The <code>buildPrompt</code> function accepted whitespace-only strings (e.g., <code>"   "</code>, <code>"\t\n"</code>) as valid subject lines because the check <code>!originalSubject</code> only catches empty strings, null, and undefined. Whitespace-only strings are truthy in JavaScript, so they passed validation but would produce prompts with effectively empty subjects.</p>
+    <p><strong>Test:</strong> supabase/functions/optimize-subject/logic_test.ts - "buildPrompt throws when originalSubject is whitespace-only"</p>
+    <p><strong>Fix:</strong> Added <code>!originalSubject.trim()</code> to the validation check to reject whitespace-only input.</p>
+  </div>
+
+  <div class="bug">
+    <h3>Bug #2: Negative Unix timestamps incorrectly rejected</h3>
+    <p><strong>Location:</strong> supabase/functions/check-subscription/logic.ts:9, supabase/functions/stripe-webhook/logic.ts:25</p>
+    <p><strong>Description:</strong> The <code>toIsoFromUnixSeconds</code> function used <code>unixSeconds &lt;= 0</code> to reject invalid timestamps. However, negative timestamps are valid and represent dates before January 1, 1970 (Unix epoch). While rare for subscription dates, this could cause issues with historical data or test fixtures using pre-1970 dates.</p>
+    <p><strong>Test:</strong> supabase/functions/check-subscription/logic_test.ts - "toIsoFromUnixSeconds handles negative timestamps (pre-1970 dates)"</p>
+    <p><strong>Test:</strong> supabase/functions/stripe-webhook/logic_test.ts - "toIsoFromUnixSeconds handles negative timestamps (pre-1970 dates)"</p>
+    <p><strong>Fix:</strong> Changed validation to explicitly check for <code>null</code>, <code>undefined</code>, and exactly <code>0</code> (which is ambiguous), while allowing negative timestamps to be converted correctly.</p>
+  </div>
+
+</body>
+</html>

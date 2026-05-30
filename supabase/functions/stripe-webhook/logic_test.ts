@@ -23,6 +23,12 @@ Deno.test("toIsoFromUnixSeconds returns null for invalid and converts valid", ()
   assertEquals(Math.floor(new Date(iso).getTime() / 1000), ts);
 });
 
+Deno.test("toIsoFromUnixSeconds handles negative timestamps (pre-1970 dates)", () => {
+  // -86400 is 1969-12-31 00:00:00 UTC
+  const iso = toIsoFromUnixSeconds(-86400);
+  assertEquals(iso, "1969-12-31T00:00:00.000Z");
+});
+
 Deno.test("getFirstPriceId safely extracts first price id", () => {
   assertEquals(getFirstPriceId(null), null);
   assertEquals(getFirstPriceId({ items: { data: [] } }), null);

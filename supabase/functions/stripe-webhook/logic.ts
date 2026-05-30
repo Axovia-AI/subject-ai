@@ -22,7 +22,10 @@ export function isSubscribed(status: StripeSubscriptionStatus | null | undefined
 
 /** Convert unix seconds to ISO string or null. */
 export function toIsoFromUnixSeconds(unixSeconds: number | null | undefined): string | null {
-  if (!unixSeconds || unixSeconds <= 0) return null;
+  if (unixSeconds === null || unixSeconds === undefined) return null;
+  // Note: negative timestamps are valid (dates before 1970-01-01)
+  // Only reject explicit 0 which is ambiguous (could mean "no date" or "1970-01-01")
+  if (unixSeconds === 0) return null;
   return new Date(unixSeconds * 1000).toISOString();
 }
 
