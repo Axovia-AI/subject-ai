@@ -15,6 +15,7 @@ import { SettingsPage } from '@/components/settings/SettingsPage';
 import { UsageOverview } from '@/components/usage/UsageOverview';
 import { SubscriptionManager } from '@/components/subscription/SubscriptionManager';
 import { EmailOptimizer } from '@/components/optimization/EmailOptimizer';
+import { OnboardingChecklist } from '@/components/onboarding/OnboardingChecklist';
 
 interface UserProfile {
   id: string;
@@ -28,13 +29,69 @@ interface UsageStats {
   total_emails_sent: number;
 }
 
+type OnboardingStepId = 'profile' | 'optimizer' | 'subscription' | 'analytics' | 'email-platform';
+
 const Dashboard = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [usageStats, setUsageStats] = useState<UsageStats | null>(null);
+  const [activeTab, setActiveTab] = useState('overview');
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user, loading, signOut } = useAuth();
   const { subscriptionData } = useSubscription();
+
+  // Compute completed onboarding steps based on user state
+  const getCompletedSteps = (): OnboardingStepId[] => {
+    const completed: OnboardingStepId[] = [];
+
+    // Profile is complete if user has a full_name set
+    if (userProfile?.full_name) {
+      completed.push('profile');
+    }
+
+    // User has used the optimizer if they have optimized at least one subject line
+    if (usageStats && usageStats.optimized_count > 0) {
+      completed.push('optimizer');
+    }
+
+    // User has a subscription
+    if (subscriptionData?.subscribed) {
+      completed.push('subscription');
+    }
+
+    // User has explored analytics (we track this in localStorage)
+    if (localStorage.getItem('analytics_viewed') === 'true') {
+      completed.push('analytics');
+    }
+
+    return completed;
+  };
+
+  // Handle onboarding step click to navigate to the relevant tab
+  const handleOnboardingStepClick = (stepId: OnboardingStepId, link: string) => {
+    const tabMapping: Record<string, string> = {
+      settings: 'settings',
+      optimizer: 'optimizer',
+      pricing: 'subscription',
+      analytics: 'analytics',
+    };
+
+    const targetTab = tabMapping[link] || 'overview';
+    setActiveTab(targetTab);
+
+    // Track analytics view when navigating there
+    if (targetTab === 'analytics') {
+      localStorage.setItem('analytics_viewed', 'true');
+    }
+  };
+
+  // Track analytics tab view
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    if (value === 'analytics') {
+      localStorage.setItem('analytics_viewed', 'true');
+    }
+  };
 
   // Redirect to auth if not authenticated
   useEffect(() => {
@@ -203,8 +260,16 @@ const Dashboard = () => {
           </Card>
         </div>
 
+        {/* Onboarding Checklist - shown prominently for new users */}
+        <div className="mb-8">
+          <OnboardingChecklist
+            completedSteps={getCompletedSteps()}
+            onStepClick={handleOnboardingStepClick}
+          />
+        </div>
+
         {/* Tabs for different sections */}
-        <Tabs defaultValue="overview" className="space-y-6">
+        <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-6">
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="optimizer" className="flex items-center gap-2">
